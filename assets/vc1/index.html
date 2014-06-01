@@ -1,0 +1,100 @@
+<html>
+<head>
+<style type="text/css">
+
+.business-card {
+  margin: 0 auto;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #488CC7;
+  box-shadow: 0 0 10px #999;
+  overflow: hidden;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.business-card .background-stripes {
+  position: relative;
+  background: #fff;
+}
+
+.business-card .background-stripes .stripe {
+  position: absolute;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-transform-origin: 100% 100%;
+  -moz-transform-origin: 100% 100%;
+  -o-transform-origin: 100% 100%;
+  -ms-transform-origin: 100% 100%;
+  transform-origin: 100% 100%;
+  box-shadow: 0 0 2px #999;
+}
+
+.business-card .background-stripes .stripe-1 {
+  width: 250px;
+  height: 40px;
+  left: -100px;
+  top: -60px;
+  background: #eee;
+}
+
+.business-card header {
+  text-align: center;
+  position: relative;
+  font-size: 3em;
+  z-index: 999;
+  font-family: 'Monoton';
+  color: #222;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.25), 0 -1px 0 rgba(0,0,0,0.25);
+}
+
+.business-card footer {
+  text-align: center;
+  position: relative;
+  bottom: -35px;
+  font-family: 'Kreon';
+  letter-spacing: 1px;
+}
+
+.business-card footer span.contact-title {
+  background: rgba(255,255,255,0.5);
+  margin-top: 20px;
+  box-shadow: 0 0 2px #ccc, inset 0 0 0px #aaa;
+  padding: 5px;
+}
+
+.business-card footer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.business-card footer ul li {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.25), 0 -1px 0 rgba(0,0,0,0.25);
+}
+</style>
+</head>
+<body>
+
+
+<div class="business-card">
+  <header>
+   #name
+  </header>
+  <footer>
+    <span class="contact-title">
+      Contact Me
+    </span>
+    <ul>
+      <li>Say hi at #email</li>
+      <li>#website</li>
+      <li>#phone</li>
+    </ul>
+  </footer>
+</div>
+</body>
+</html>
