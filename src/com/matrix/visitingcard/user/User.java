@@ -1,7 +1,6 @@
 package com.matrix.visitingcard.user;
 
 import java.util.ArrayList;
-import java.util.zip.ZipInputStream;
 
 import android.graphics.Bitmap;
 
