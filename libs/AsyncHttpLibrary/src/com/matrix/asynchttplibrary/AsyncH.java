@@ -1,4 +1,4 @@
-package com.techjini.asynchttplibrary;
+package com.matrix.asynchttplibrary;
 
 import java.io.UnsupportedEncodingException;
 import java.security.KeyStore;
@@ -19,12 +19,12 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.techjini.asynchttplibrary.logger.ALogger;
-import com.techjini.asynchttplibrary.model.CallProperties;
-import com.techjini.asynchttplibrary.request.AsyncRequestHeader;
-import com.techjini.asynchttplibrary.request.AsyncRequestParam;
-import com.techjini.asynchttplibrary.security.CustomSSLSocketFactory;
-import com.techjini.asynchttplibrary.util.AsyncUtil;
+import com.matrix.asynchttplibrary.logger.ALogger;
+import com.matrix.asynchttplibrary.model.CallProperties;
+import com.matrix.asynchttplibrary.request.AsyncRequestHeader;
+import com.matrix.asynchttplibrary.request.AsyncRequestParam;
+import com.matrix.asynchttplibrary.security.CustomSSLSocketFactory;
+import com.matrix.asynchttplibrary.util.AsyncUtil;
 
 /**
  * 

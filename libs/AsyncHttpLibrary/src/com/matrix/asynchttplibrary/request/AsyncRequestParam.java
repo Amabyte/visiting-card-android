@@ -1,6 +1,6 @@
-package com.techjini.asynchttplibrary.request;
+package com.matrix.asynchttplibrary.request;
 
-import com.techjini.asynchttplibrary.annotation.AsyncHIgnoreParam;
+import com.matrix.asynchttplibrary.annotation.AsyncHIgnoreParam;
 
 public class AsyncRequestParam {
 	@AsyncHIgnoreParam(ignore = "true")

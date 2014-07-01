@@ -1,4 +1,4 @@
-package com.techjini.asynchttplibrary.util;
+package com.matrix.asynchttplibrary.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,12 +21,12 @@ import android.content.Entity;
 import android.util.SparseIntArray;
 
 import com.loopj.android.http.RequestParams;
-import com.techjini.asynchttplibrary.annotation.AsyncHAnnotation;
-import com.techjini.asynchttplibrary.annotation.AsyncHIgnoreParam;
-import com.techjini.asynchttplibrary.logger.ALogger;
-import com.techjini.asynchttplibrary.model.CallProperties;
-import com.techjini.asynchttplibrary.request.AsyncRequestParam;
-import com.techjini.asynchttplibrary.request.AsyncRequestParam.Type;
+import com.matrix.asynchttplibrary.annotation.AsyncHAnnotation;
+import com.matrix.asynchttplibrary.annotation.AsyncHIgnoreParam;
+import com.matrix.asynchttplibrary.logger.ALogger;
+import com.matrix.asynchttplibrary.model.CallProperties;
+import com.matrix.asynchttplibrary.request.AsyncRequestParam;
+import com.matrix.asynchttplibrary.request.AsyncRequestParam.Type;
 
 public class AsyncUtil {
 

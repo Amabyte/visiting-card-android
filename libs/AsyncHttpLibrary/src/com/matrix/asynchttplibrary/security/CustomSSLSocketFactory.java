@@ -1,4 +1,4 @@
-package com.techjini.asynchttplibrary.security;
+package com.matrix.asynchttplibrary.security;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;

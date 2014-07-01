@@ -1,4 +1,4 @@
-package com.techjini.asynchttplibrary.annotation;
+package com.matrix.asynchttplibrary.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

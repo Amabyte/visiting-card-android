@@ -1,4 +1,4 @@
-package com.techjini.asynchttplibrary.model;
+package com.matrix.asynchttplibrary.model;
 
 public class CallProperties {
 	public String protocol;

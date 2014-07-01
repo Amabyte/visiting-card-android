@@ -1,8 +1,8 @@
-package com.techjini.asynchttplibrary.parser;
+package com.matrix.asynchttplibrary.parser;
 
 import com.google.gson.Gson;
-import com.techjini.asynchttplibrary.logger.ALogger;
-import com.techjini.asynchttplibrary.response.AsyncResponseBody;
+import com.matrix.asynchttplibrary.logger.ALogger;
+import com.matrix.asynchttplibrary.response.AsyncResponseBody;
 
 /**
  * 
