@@ -1,34 +1,74 @@
 package com.matrix.visitingcard.user;
 
-import java.util.ArrayList;
-
-import android.graphics.Bitmap;
 
 public class User {
 
-	private static User user = null;
+	private boolean isNewUser;
+	private String id;
 	private String name;
-	private ArrayList<String> ContactPersonal;
-	private ArrayList<String> ContactBusiness;
-	private ArrayList<String> ContactOffice;
-	private ArrayList<String> ContactResidence;
-	private String address;
-	private String designation;
-	private String companyName;
-	private String companyAddress;
-	private Bitmap companyLogo;
-	private Bitmap userPhoto;
+	private String createdAt;
+	private String updatedAt;
+	private String email;
 
-	public static User getInstance() {
-		if (user != null) {
-			return user;
-		} else {
-			return createNewUser();
-		}
+	private static User instance = null;
+
+	protected User() {
 	}
 
-	private static User createNewUser() {
-		return null;
+	public synchronized static User getInstance() {
+		if (instance == null) {
+			instance = new User();
+
+		}
+		return instance;
+	}
+
+	public boolean isNewUser() {
+		return isNewUser;
+	}
+
+	public void setNewUser(boolean isNewUser) {
+		this.isNewUser = isNewUser;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

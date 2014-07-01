@@ -19,4 +19,13 @@ public class AsyncHttp extends AsyncH {
 		return instance;
 	}
 
+	public static AsyncHttp getNewInstance() {
+		AsyncHttp newInstance = new AsyncHttp();
+		newInstance.addHeader("Content-Type", "application/json");
+		newInstance.addHeader("Accept",
+				"application/vnd.visiting-card+json;version=1");
+
+		return newInstance;
+	}
+
 }

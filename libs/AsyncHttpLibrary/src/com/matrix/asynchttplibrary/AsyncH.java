@@ -92,6 +92,10 @@ public class AsyncH extends AsyncHttpClient {
 	public void communicate(CallProperties callProperties,
 			AsyncRequestHeader header, AsyncRequestParam param,
 			AsyncHttpResponseHandler handler) {
+		if (callProperties == null) {
+			ALogger.e("callProperties is null");
+			return;
+		}
 
 		if (callProperties.protocol.equalsIgnoreCase("REST")) {
 			generateRESTRequest(callProperties, header, param, handler);
@@ -137,9 +141,9 @@ public class AsyncH extends AsyncHttpClient {
 			bindHeaders(header);
 		}
 
-		JSONObject jsonParams =null;
+		JSONObject jsonParams = null;
 		if (param != null) {
-			jsonParams = (JSONObject) AsyncUtil.processParams(param,false);
+			jsonParams = (JSONObject) AsyncUtil.processParams(param, false);
 
 		}
 
@@ -179,7 +183,7 @@ public class AsyncH extends AsyncHttpClient {
 			bindHeaders(header);
 		}
 		if (param != null) {
-			params = (RequestParams) AsyncUtil.processParams(param,false);
+			params = (RequestParams) AsyncUtil.processParams(param, false);
 
 		}
 
@@ -205,7 +209,7 @@ public class AsyncH extends AsyncHttpClient {
 			bindHeaders(header);
 		}
 		if (param != null) {
-			params = (RequestParams) AsyncUtil.processParams(param,true);
+			params = (RequestParams) AsyncUtil.processParams(param, true);
 
 		}
 
