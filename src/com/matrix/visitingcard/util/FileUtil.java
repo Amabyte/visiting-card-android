@@ -16,6 +16,7 @@ public class FileUtil {
 					files[i].delete();
 				}
 			}
+			path.delete();
 		}
 
 	}

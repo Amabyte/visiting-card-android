@@ -8,6 +8,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -37,7 +38,6 @@ public class SignUpFormActivity extends Activity {
 	protected String mAccountName;
 	public ProgressDialog progressDialog;
 	private AsyncH mAsyncHttp;
-	private AsyncParser mParser;
 	private static final int REQ_SIGN_IN_REQUIRED = 1;
 
 	@Override
@@ -58,7 +58,6 @@ public class SignUpFormActivity extends Activity {
 
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
-		mParser = new AsyncParser();
 	}
 
 	private void initializeViews() {
@@ -96,7 +95,7 @@ public class SignUpFormActivity extends Activity {
 				token = GoogleAuthUtil.getToken(getApplicationContext(),
 						accountName, scopes);
 
-				// Log.e("token", "Token:" + token);
+				 VLogger.v( "Token:" + token);
 			} catch (IOException e) {
 				VLogger.e(e.getMessage());
 			} catch (UserRecoverableAuthException e) {
@@ -154,6 +153,7 @@ public class SignUpFormActivity extends Activity {
 		mAsyncHttp.communicate(connectionProperties, null, param, handler);
 	}
 
+	public static String sessionId;
 	class ARHandlerSocialLogin extends AsyncHttpResponseHandler {
 
 		@Override
@@ -165,8 +165,16 @@ public class SignUpFormActivity extends Activity {
 			progressDialog.dismiss();
 
 			Parser.parseSocialLogin(content);// Saves data to user singelton
-
-			VLogger.e(User.getInstance().getEmail());
+			
+			for (Header header : headers) {
+				// store the Set-Cookie last value
+				if (header.getName().equalsIgnoreCase("Set-Cookie")) {
+					sessionId = header.getValue();
+				}
+				// TODO modify this logic
+			}
+			launchHomeScreen();
+			// VLogger.e(User.getInstance().getEmail());
 
 		}
 
@@ -181,6 +189,12 @@ public class SignUpFormActivity extends Activity {
 					"Unable to login please retry", Toast.LENGTH_LONG).show();
 			progressDialog.dismiss();
 		}
+
+	}
+
+	public void launchHomeScreen() {
+		startActivity(new Intent(SignUpFormActivity.this,
+				HomeScreenActivity.class));
 
 	}
 

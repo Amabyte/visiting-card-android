@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.matrix.visitingcard.MainActivity"
+            android:name="com.matrix.visitingcard.HomeScreenActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
