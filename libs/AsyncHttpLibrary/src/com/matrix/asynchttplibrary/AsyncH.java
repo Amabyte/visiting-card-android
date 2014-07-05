@@ -9,8 +9,6 @@ import java.util.Set;
 
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -201,6 +199,31 @@ public class AsyncH extends AsyncHttpClient {
 
 	}
 
+	
+	public void generatePostRequestTemperoryMethod(String baseUrl,
+			AsyncRequestHeader header, RequestParams param,
+			AsyncHttpResponseHandler handler) {
+
+
+		if (header != null) {
+			bindHeaders(header);
+		}
+		
+
+		if (baseUrl == null) {
+			ALogger.e("baseUrl is null");
+			handler.onFailure(0, null, "baseUrl is null".getBytes(), null);
+			return;
+		}
+		if (handler == null) {
+			ALogger.e("handler is null");
+			return;
+		}
+
+		post(baseUrl, param, handler);
+
+	}
+	
 	private void generateGetRequest(String baseUrl, AsyncRequestHeader header,
 			AsyncRequestParam param, AsyncHttpResponseHandler handler) {
 		RequestParams params = null;

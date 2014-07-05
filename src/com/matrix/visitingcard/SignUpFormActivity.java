@@ -95,7 +95,7 @@ public class SignUpFormActivity extends Activity {
 				token = GoogleAuthUtil.getToken(getApplicationContext(),
 						accountName, scopes);
 
-				 VLogger.v( "Token:" + token);
+				 VLogger.d( "Token:" + token);
 			} catch (IOException e) {
 				VLogger.e(e.getMessage());
 			} catch (UserRecoverableAuthException e) {
@@ -146,7 +146,7 @@ public class SignUpFormActivity extends Activity {
 				"social_login", "url.properties");
 
 		SocialLoginRequest param = new SocialLoginRequest("google_oauth2",
-				token);
+				token,"dummy+device_id554");
 
 		ARHandlerSocialLogin handler = new ARHandlerSocialLogin();
 

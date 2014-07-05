@@ -1,11 +1,13 @@
 package com.matrix.visitingcard;
 
-import java.util.ArrayList;
-
 import org.apache.http.Header;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -13,12 +15,13 @@ import com.matrix.asynchttplibrary.AsyncH;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.adapter.VCTAdapter;
+import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.logger.VLogger;
 
-public class HomeScreenActivity extends Activity {
+public class HomeScreenActivity extends Activity implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewVCT;
 	private VCTAdapter mAdapter;
@@ -37,6 +40,7 @@ public class HomeScreenActivity extends Activity {
 
 	private void initializeViews() {
 		mListViewVCT = (ListView) findViewById(R.id.lvVCT);
+		mListViewVCT.setOnItemClickListener(this);
 
 	}
 
@@ -67,7 +71,6 @@ public class HomeScreenActivity extends Activity {
 			// + (content == null ? "null" : new String(content)));
 			Parser.parseVCT(content);
 			setAdapter();
-
 		}
 
 		@Override
@@ -85,6 +88,8 @@ public class HomeScreenActivity extends Activity {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 	}
 
+
+
 	@Override
 	protected void onDestroy() {
 		mAsyncHttp.cancelAllRequests(true);
@@ -94,6 +99,17 @@ public class HomeScreenActivity extends Activity {
 	private void checkUserDetail() {
 		// ((TextView) findViewById(R.id.tvUserName)).setText(User.getInstance()
 		// .getEmail());
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+
+		Intent i = new Intent(HomeScreenActivity.this, CreateVCActivity.class);
+		i.putExtra(Constants.Intent.HOME_TO_VC, id);
+
+		startActivity(i);
+
 	}
 
 }

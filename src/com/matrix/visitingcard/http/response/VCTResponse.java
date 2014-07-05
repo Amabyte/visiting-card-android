@@ -2,6 +2,8 @@ package com.matrix.visitingcard.http.response;
 
 import java.util.ArrayList;
 
+import android.graphics.Bitmap;
+
 public class VCTResponse {
 
 	private int id;
@@ -10,8 +12,6 @@ public class VCTResponse {
 	private ArrayList<KeysAndTypes> keysAndTypes;
 
 	private static ArrayList<VCTResponse> instance = null;
-
-	
 
 	public synchronized static ArrayList<VCTResponse> getAllVCT() {
 		if (instance == null) {
