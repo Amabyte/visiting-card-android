@@ -8,12 +8,13 @@ public class Constants {
 
 	public class Intent {
 		public static final String HOME_TO_VC = "intent_homescreen_to_create_vc";
+		public static final String MY_VC_LIST_ID = "my_list_vc_id";
 	}
 
 	public class SP {
 		public static final String SESSION_ID = "session_id";
 		public static final String GCM_ID = "gcm_unique_id";
-		public static final String APP_VERSION="app_version";
-		
+		public static final String APP_VERSION = "app_version";
+
 	}
 }

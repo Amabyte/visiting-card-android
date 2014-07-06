@@ -38,6 +38,8 @@ public class SplashScreenActivity extends Activity {
 			VLogger.e("regid is " + regid);
 			if (regid.isEmpty()) {
 				registerInBackground();
+			} else {
+				performLogin();
 			}
 		} else {
 			VLogger.e("No valid Google Play Services APK found.");
@@ -99,11 +101,11 @@ public class SplashScreenActivity extends Activity {
 		// since the existing regID is not guaranteed to work with the new
 		// app version.
 
-		int registeredVersion = 0;
+		float registeredVersion = 0;
 
-		registeredVersion = sp.getSharedPrefsValueInt(Constants.SP.APP_VERSION,
-				Integer.MIN_VALUE);
-		int currentVersion = getAppVersion(context);
+		registeredVersion = sp.getSharedPrefsValueFloat(
+				Constants.SP.APP_VERSION, Integer.MIN_VALUE);
+		float currentVersion = getAppVersion(context);
 		if (registeredVersion != currentVersion) {
 			VLogger.e("App version changed.");
 			return "";
@@ -111,7 +113,7 @@ public class SplashScreenActivity extends Activity {
 		return registrationId;
 	}
 
-	private static int getAppVersion(Context context) {
+	private static float getAppVersion(Context context) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager()
 					.getPackageInfo(context.getPackageName(), 0);
@@ -177,7 +179,7 @@ public class SplashScreenActivity extends Activity {
 	}
 
 	private void storeRegistrationId(Context context, String regId) {
-		int appVersion = getAppVersion(context);
+		float appVersion = getAppVersion(context);
 		sp.savePreferences(Constants.SP.GCM_ID, regId);
 		sp.savePreferences(Constants.SP.APP_VERSION, appVersion);
 	}

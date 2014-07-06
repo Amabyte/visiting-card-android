@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.http.Header;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +33,7 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewMyVC;
 	private VCAdapter mAdapter;
-	private SharedPrefs sp ;
+	private SharedPrefs sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
-		sp =SharedPrefs.getInstance(this);
+		sp = SharedPrefs.getInstance(this);
 		addHeadersToUIL();
 	}
 
@@ -88,8 +89,8 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
 				"my_vc", "url.properties");
 
-		mAsyncHttp.addHeader("Cookie", sp
-				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+		mAsyncHttp.addHeader("Cookie",
+				sp.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
 		ARHandlerGetMyVC handler = new ARHandlerGetMyVC();
 
 		mAsyncHttp.communicate(connectionProperties, null, null, handler);
@@ -105,7 +106,6 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 					+ (content == null ? "null" : new String(content)));
 			MyVC.setVCS(Parser.parseVC(content));
 
-			
 			setAdapter();
 		}
 
@@ -123,7 +123,8 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-
+		Intent i = new Intent(ListMyVCActivity.this, ViewVC.class);
+		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+		startActivity(i);
 	}
 }
