@@ -101,12 +101,8 @@ public class SplashScreenActivity extends Activity {
 
 		int registeredVersion = 0;
 
-		try {
-			registeredVersion = sp.getSharedPrefsValueInt(
-					Constants.SP.APP_VERSION, Integer.MIN_VALUE);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		registeredVersion = sp.getSharedPrefsValueInt(Constants.SP.APP_VERSION,
+				Integer.MIN_VALUE);
 		int currentVersion = getAppVersion(context);
 		if (registeredVersion != currentVersion) {
 			VLogger.e("App version changed.");
