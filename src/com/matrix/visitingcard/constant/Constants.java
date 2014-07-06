@@ -13,5 +13,7 @@ public class Constants {
 	public class SP {
 		public static final String SESSION_ID = "session_id";
 		public static final String GCM_ID = "gcm_unique_id";
+		public static final String APP_VERSION="app_version";
+		
 	}
 }

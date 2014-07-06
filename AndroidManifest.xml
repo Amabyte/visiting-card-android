@@ -5,12 +5,19 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="9"
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.matrix.visitingcard.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="com.matrix.visitingcard.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
 
     <application
         android:name=".util.VisitingCardApp"
@@ -25,11 +32,6 @@
         <activity
             android:name=".SignUpFormActivity"
             android:label="@string/title_activity_sign_up_form" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
@@ -51,7 +53,24 @@
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/title_activity_splash_screen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.matrix.visitingcard" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GcmIntentService" />
     </application>
 
 </manifest>

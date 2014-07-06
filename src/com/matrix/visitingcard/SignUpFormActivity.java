@@ -151,8 +151,10 @@ public class SignUpFormActivity extends Activity {
 				"social_login", "url.properties");
 
 		SocialLoginRequest param = new SocialLoginRequest("google_oauth2",
-				token, "dummy+device_id554");
+				token, sp.getSharedPrefsValueString(Constants.SP.GCM_ID, null));
 
+		VLogger.e("GCM id is "
+				+ sp.getSharedPrefsValueString(Constants.SP.GCM_ID, null));
 		ARHandlerSocialLogin handler = new ARHandlerSocialLogin();
 
 		mAsyncHttp.communicate(connectionProperties, null, param, handler);
@@ -178,6 +180,7 @@ public class SignUpFormActivity extends Activity {
 			}
 			launchHomeScreen();
 			// VLogger.e(User.getInstance().getEmail());
+			finish();
 
 		}
 

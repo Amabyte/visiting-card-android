@@ -90,6 +90,7 @@ public class HomeScreenActivity extends Activity implements OnClickListener {
 					+ "content "
 					+ (content == null ? "null" : new String(content)));
 			sp.destroy();
+			//TODO : clear GCM shit
 
 		}
 

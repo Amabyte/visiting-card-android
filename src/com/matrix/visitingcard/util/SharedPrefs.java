@@ -72,6 +72,10 @@ public class SharedPrefs {
 		return sp.getFloat(key, defaultValue);
 	}
 
+	public int getSharedPrefsValueInt(String key, int defaultValue) {
+		return sp.getInt(key, defaultValue);
+	}
+
 	/**
 	 * Save the key value pair in SharedPrefs
 	 * 
