@@ -2,75 +2,95 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.matrix.asynchttplibrary.model.CallProperties;
+import com.matrix.asynchttplibrary.util.AsyncUtil;
+import com.matrix.visitingcard.ListMyVCActivity.ARHandlerGetMyVC;
+import com.matrix.visitingcard.constant.Constants;
+import com.matrix.visitingcard.http.AsyncHttp;
+import com.matrix.visitingcard.http.parser.Parser;
+import com.matrix.visitingcard.http.response.MyVC;
+import com.matrix.visitingcard.logger.VLogger;
+import com.matrix.visitingcard.util.SharedPrefs;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
+import android.view.View.OnClickListener;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.matrix.asynchttplibrary.AsyncH;
-import com.matrix.asynchttplibrary.model.CallProperties;
-import com.matrix.asynchttplibrary.util.AsyncUtil;
-import com.matrix.visitingcard.adapter.VCTAdapter;
-import com.matrix.visitingcard.constant.Constants;
-import com.matrix.visitingcard.http.AsyncHttp;
-import com.matrix.visitingcard.http.parser.Parser;
-import com.matrix.visitingcard.http.response.VCTResponse;
-import com.matrix.visitingcard.logger.VLogger;
+public class HomeScreenActivity extends Activity implements OnClickListener {
 
-public class HomeScreenActivity extends Activity implements OnItemClickListener {
-	private AsyncH mAsyncHttp;
-	private ListView mListViewVCT;
-	private VCTAdapter mAdapter;
+	private AsyncHttp mAsyncHttp;
+	private SharedPrefs sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_screen);
-		checkUserDetail();
 		initialize();
 		initializeViews();
+	}
 
-		getVCT();
+	private void initialize() {
+		mAsyncHttp = AsyncHttp.getNewInstance();
+		sp = SharedPrefs.getInstance(this);
+	}
 
+	@Override
+	protected void onDestroy() {
+		mAsyncHttp.cancelAllRequests(true);
+		super.onDestroy();
 	}
 
 	private void initializeViews() {
-		mListViewVCT = (ListView) findViewById(R.id.lvVCT);
-		mListViewVCT.setOnItemClickListener(this);
+
+		findViewById(R.id.bCreateNewVC).setOnClickListener(this);
+		findViewById(R.id.bViewMyVC).setOnClickListener(this);
+		findViewById(R.id.bSignout).setOnClickListener(this);
 
 	}
 
-	private void setAdapter() {
-		mAdapter = new VCTAdapter(this, R.layout.list_item_vct,
-				VCTResponse.getAllVCT());
-		mListViewVCT.setAdapter(mAdapter);
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.bCreateNewVC:
+			startActivity(new Intent(HomeScreenActivity.this,
+					ListOfVCTActivity.class));
+			break;
+		case R.id.bViewMyVC:
+			startActivity(new Intent(HomeScreenActivity.this,
+					ListMyVCActivity.class));
+			break;
+		case R.id.bSignout:
+			signout();
+			break;
+		}
 	}
 
-	private void getVCT() {
+	private void signout() {
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
-				"get_vct", "url.properties");
+				"sign_out", "url.properties");
 
-		mAsyncHttp.addHeader("Cookie", SignUpFormActivity.sessionId);
-		ARHandlerGetVCT handler = new ARHandlerGetVCT();
+		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
+				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+
+		ARHandlerSignout handler = new ARHandlerSignout();
 
 		mAsyncHttp.communicate(connectionProperties, null, null, handler);
 
 	}
 
-	class ARHandlerGetVCT extends AsyncHttpResponseHandler {
+	class ARHandlerSignout extends AsyncHttpResponseHandler {
 
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
 
-			// VLogger.e("ConnectionSuccessful, status code " + statusCode
-			// + "content "
-			// + (content == null ? "null" : new String(content)));
-			Parser.parseVCT(content);
-			setAdapter();
+			VLogger.e("ConnectionSuccessful, status code " + statusCode
+					+ "content "
+					+ (content == null ? "null" : new String(content)));
+			sp.destroy();
+
 		}
 
 		@Override
@@ -81,34 +101,6 @@ public class HomeScreenActivity extends Activity implements OnItemClickListener 
 					+ (response == null ? "null" : new String(response)));
 
 		}
-
-	}
-
-	private void initialize() {
-		mAsyncHttp = AsyncHttp.getNewInstance();
-	}
-
-
-
-	@Override
-	protected void onDestroy() {
-		mAsyncHttp.cancelAllRequests(true);
-		super.onDestroy();
-	}
-
-	private void checkUserDetail() {
-		// ((TextView) findViewById(R.id.tvUserName)).setText(User.getInstance()
-		// .getEmail());
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-
-		Intent i = new Intent(HomeScreenActivity.this, CreateVCActivity.class);
-		i.putExtra(Constants.Intent.HOME_TO_VC, id);
-
-		startActivity(i);
 
 	}
 

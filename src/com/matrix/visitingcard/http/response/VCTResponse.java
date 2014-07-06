@@ -2,7 +2,7 @@ package com.matrix.visitingcard.http.response;
 
 import java.util.ArrayList;
 
-import android.graphics.Bitmap;
+import com.matrix.visitingcard.logger.VLogger;
 
 public class VCTResponse {
 
@@ -18,6 +18,12 @@ public class VCTResponse {
 			instance = new ArrayList<VCTResponse>();
 		}
 		return instance;
+	}
+
+	public static void setVCTs(ArrayList<VCTResponse> parseVCT) {
+		instance = parseVCT;
+		VLogger.i("Overriding singlton");
+
 	}
 
 	public ArrayList<KeysAndTypes> getKeysAndTypes() {
@@ -108,4 +114,5 @@ public class VCTResponse {
 		}
 
 	}
+
 }

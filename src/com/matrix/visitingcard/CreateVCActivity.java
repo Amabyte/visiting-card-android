@@ -9,15 +9,18 @@ import org.apache.http.Header;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore.Files;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -29,6 +32,8 @@ import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.http.response.VCTResponse.KeysAndTypes;
 import com.matrix.visitingcard.logger.VLogger;
+import com.matrix.visitingcard.util.FileUtil;
+import com.matrix.visitingcard.util.SharedPrefs;
 
 public class CreateVCActivity extends Activity {
 	private int vctId;
@@ -123,19 +128,21 @@ public class CreateVCActivity extends Activity {
 	protected void sendCollectedInfo(ArrayList<KeysAndTypes> keysAndTypes,
 			View[] views) {
 		VLogger.e("send collection");
-		String PARAM_KEY = "visiting_card_datas_attributes[][key]";
-		String PARAM_VALUE = "visiting_card_datas_attributes[][value]";
-		String PARAM_IMAGE = "visiting_card_datas_attributes[][image]";
+		String PARAM_KEY = "visiting_card[visiting_card_datas_attributes[%d][key]]";
+		String PARAM_VALUE = "visiting_card[visiting_card_datas_attributes[%d][value]]";
+		String PARAM_IMAGE = "visiting_card[visiting_card_datas_attributes[%d][image]]";
 
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
-				"createVC", "url.properties");
+				"create_vc", "url.properties");
 
-		mAsyncHttp.addHeader("Cookie", SignUpFormActivity.sessionId);
+		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
+				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+		
 		ARHandlerCreateVC handler = new ARHandlerCreateVC();
 
 		RequestParams params = new RequestParams();
 
-		params.put("visiting_card_template_id", vctId);
+		params.put("visiting_card[visiting_card_template_id]", vct.getId());
 
 		int size = keysAndTypes.size();
 
@@ -146,26 +153,30 @@ public class CreateVCActivity extends Activity {
 			case TEXT:
 			case TEXTAREA:
 				String value = ((EditText) views[i]).getText().toString();
-				params.put(PARAM_KEY, kt.getKey());
-				params.put(PARAM_VALUE, value);
+				params.put(String.format(PARAM_KEY, i), kt.getKey());
+				params.put(String.format(PARAM_VALUE, i), value);
 				// VLogger.e("\nkey " + kt.getKey() + "\nval " + value);
 				break;
 			case IMAGE:
-				params.put(PARAM_KEY, kt.getKey());
-				File image = null;
+				File image;
+				String mimeType;
 				try {
-					image = new File("/storage/emulated/0/VC/images.jpeg");
-					VLogger.e("image size " + image.length());
-					params.put(PARAM_IMAGE, image);
+					image = new File("/storage/emulated/0/VC/angry.png");
+					mimeType = FileUtil.getMimeType(image.getAbsolutePath());
+
+					params.put(String.format(PARAM_KEY, i), kt.getKey());
+					params.put(String.format(PARAM_VALUE, i), "vcimagevc");
+					params.put(String.format(PARAM_IMAGE, i), image, mimeType);
+
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				
+
 				break;
 
 			}
 		}
-		 VLogger.e(params.toString());
+		VLogger.e(params.toString());
 		mAsyncHttp.generatePostRequestTemperoryMethod(
 				connectionProperties.baseURL, null, params, handler);
 	}
@@ -178,7 +189,10 @@ public class CreateVCActivity extends Activity {
 			VLogger.e("ConnectionSuccessful, status code " + statusCode
 					+ "content "
 					+ (content == null ? "null" : new String(content)));
+			Toast.makeText(CreateVCActivity.this, "Visiting Card Created",
+					Toast.LENGTH_LONG).show();
 
+			CreateVCActivity.this.finish();
 		}
 
 		@Override
@@ -201,4 +215,5 @@ public class CreateVCActivity extends Activity {
 		mAsyncHttp.cancelAllRequests(true);
 		super.onDestroy();
 	}
+
 }

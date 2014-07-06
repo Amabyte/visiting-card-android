@@ -28,4 +28,11 @@ public class AsyncHttp extends AsyncH {
 		return newInstance;
 	}
 
+	public static AsyncHttp getStrippedInstance() {
+		AsyncHttp newInstance = new AsyncHttp();
+		newInstance.addHeader("Accept",
+				"application/vnd.visiting-card+json;version=1");
+
+		return newInstance;
+	}
 }

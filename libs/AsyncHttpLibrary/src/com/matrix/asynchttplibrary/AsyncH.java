@@ -111,9 +111,33 @@ public class AsyncH extends AsyncHttpClient {
 			generateGetRequest(callProperties.baseURL, header, param, handler);
 		} else if (callProperties.method.equalsIgnoreCase("POST")) {
 			generatePostRequest(callProperties.baseURL, header, param, handler);
+		} else if (callProperties.method.equalsIgnoreCase("DELETE")) {
+			generateDeleteRequest(callProperties.baseURL, header, param,
+					handler);
 		} else {
 			ALogger.e("Not implemented " + callProperties.method);
 		}
+	}
+
+	private void generateDeleteRequest(String baseURL,
+			AsyncRequestHeader header, AsyncRequestParam param,
+			AsyncHttpResponseHandler handler) {
+
+		if (header != null) {
+			bindHeaders(header);
+		}
+
+		if (baseURL == null) {
+			ALogger.e("baseUrl is null");
+			handler.onFailure(0, null, "baseUrl is null".getBytes(), null);
+			return;
+		}
+		if (handler == null) {
+			ALogger.e("handler is null");
+			return;
+		}
+		delete(baseURL, handler);
+
 	}
 
 	private void generatePostRequest(String baseURL, AsyncRequestHeader header,
@@ -199,16 +223,13 @@ public class AsyncH extends AsyncHttpClient {
 
 	}
 
-	
 	public void generatePostRequestTemperoryMethod(String baseUrl,
 			AsyncRequestHeader header, RequestParams param,
 			AsyncHttpResponseHandler handler) {
 
-
 		if (header != null) {
 			bindHeaders(header);
 		}
-		
 
 		if (baseUrl == null) {
 			ALogger.e("baseUrl is null");
@@ -223,7 +244,7 @@ public class AsyncH extends AsyncHttpClient {
 		post(baseUrl, param, handler);
 
 	}
-	
+
 	private void generateGetRequest(String baseUrl, AsyncRequestHeader header,
 			AsyncRequestParam param, AsyncHttpResponseHandler handler) {
 		RequestParams params = null;

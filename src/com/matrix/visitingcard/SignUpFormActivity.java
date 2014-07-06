@@ -9,6 +9,7 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -25,11 +26,13 @@ import com.matrix.asynchttplibrary.AsyncH;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.parser.AsyncParser;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
+import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.request.SocialLoginRequest;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.user.User;
+import com.matrix.visitingcard.util.SharedPrefs;
 
 public class SignUpFormActivity extends Activity {
 
@@ -39,6 +42,7 @@ public class SignUpFormActivity extends Activity {
 	public ProgressDialog progressDialog;
 	private AsyncH mAsyncHttp;
 	private static final int REQ_SIGN_IN_REQUIRED = 1;
+	private SharedPrefs sp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class SignUpFormActivity extends Activity {
 
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
+		sp = SharedPrefs.getInstance(this);
 	}
 
 	private void initializeViews() {
@@ -95,7 +100,7 @@ public class SignUpFormActivity extends Activity {
 				token = GoogleAuthUtil.getToken(getApplicationContext(),
 						accountName, scopes);
 
-				 VLogger.d( "Token:" + token);
+				VLogger.d("Token:" + token);
 			} catch (IOException e) {
 				VLogger.e(e.getMessage());
 			} catch (UserRecoverableAuthException e) {
@@ -146,14 +151,13 @@ public class SignUpFormActivity extends Activity {
 				"social_login", "url.properties");
 
 		SocialLoginRequest param = new SocialLoginRequest("google_oauth2",
-				token,"dummy+device_id554");
+				token, "dummy+device_id554");
 
 		ARHandlerSocialLogin handler = new ARHandlerSocialLogin();
 
 		mAsyncHttp.communicate(connectionProperties, null, param, handler);
 	}
 
-	public static String sessionId;
 	class ARHandlerSocialLogin extends AsyncHttpResponseHandler {
 
 		@Override
@@ -165,13 +169,12 @@ public class SignUpFormActivity extends Activity {
 			progressDialog.dismiss();
 
 			Parser.parseSocialLogin(content);// Saves data to user singelton
-			
+
 			for (Header header : headers) {
-				// store the Set-Cookie last value
 				if (header.getName().equalsIgnoreCase("Set-Cookie")) {
-					sessionId = header.getValue();
+					sp.savePreferences(Constants.SP.SESSION_ID,
+							header.getValue());
 				}
-				// TODO modify this logic
 			}
 			launchHomeScreen();
 			// VLogger.e(User.getInstance().getEmail());

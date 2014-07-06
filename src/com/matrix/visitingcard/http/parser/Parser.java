@@ -6,6 +6,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.matrix.visitingcard.http.response.MyVC;
+import com.matrix.visitingcard.http.response.VC;
+import com.matrix.visitingcard.http.response.VC.ImageUrl;
+import com.matrix.visitingcard.http.response.VC.KeysAndValues;
 import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.http.response.VCTResponse.KeysAndTypes;
 import com.matrix.visitingcard.http.response.VCTResponse.KeysType;
@@ -50,19 +54,19 @@ public class Parser {
 
 	}
 
-	public static void parseVCT(byte[] content) {
+	public static ArrayList<VCTResponse> parseVCT(byte[] content) {
 
 		if (content == null || content.length == 0) {
 			VLogger.e("content is null");
-			return;
+			return null;
 		}
 
-		ArrayList<VCTResponse> vcts = VCTResponse.getAllVCT();
+		ArrayList<VCTResponse> vcts = new ArrayList<VCTResponse>();
 
 		try {
 			JSONArray jsonArray = new JSONArray(new String(content));
 
-			for (int i=0; i < jsonArray.length(); i++) {
+			for (int i = 0; i < jsonArray.length(); i++) {
 				VCTResponse vct = new VCTResponse();
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -113,7 +117,69 @@ public class Parser {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		return vcts;
+	}
 
+	public static ArrayList<VC> parseVC(byte[] content) {
+
+		if (content == null || content.length == 0) {
+			VLogger.e("content is null");
+			return null;
+		}
+
+		ArrayList<VC> vcs = new ArrayList<VC>();
+
+		try {
+			JSONArray jsonArray = new JSONArray(new String(content));
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				VC vc = new VC();
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+				vc.setId(jsonObject.getInt("id"));
+				vc.setUserId(jsonObject.getInt("user_id"));
+				vc.setVisitingCardTemplateId(jsonObject
+						.getInt("visiting_card_template_id"));
+				vc.setCreatedAt(jsonObject.getString("created_at"));
+				vc.setUpdatedAt(jsonObject.getString("updated_at"));
+
+				JSONObject jsonSampleUrls = jsonObject
+						.getJSONObject("image_url");
+				ImageUrl imageUrl = vc.new ImageUrl();
+
+				imageUrl.setOriginal(jsonSampleUrls.getString("original"));
+				imageUrl.setThumb(jsonSampleUrls.getString("thumb"));
+				imageUrl.setMedium(jsonSampleUrls.getString("medium"));
+
+				vc.setImagUrls(imageUrl);
+
+				JSONArray jsonKeysAndValues = jsonObject
+						.getJSONArray("visiting_card_datas");
+				ArrayList<KeysAndValues> keysAndValues = new ArrayList<KeysAndValues>();
+
+				for (int j = 0; j < jsonKeysAndValues.length(); j++) {
+					JSONObject jsonKeyAndValue = jsonKeysAndValues
+							.getJSONObject(j);
+					String key = jsonKeyAndValue.getString("key");
+					String value = jsonKeyAndValue.getString("value");
+
+					KeysAndValues keyAndValue = vc.new KeysAndValues();
+
+					keyAndValue.setKey(key);
+					keyAndValue.setValue(value);
+					keysAndValues.add(keyAndValue);
+
+				}
+
+				vc.setKeysAndValues(keysAndValues);
+
+				vcs.add(vc);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return vcs;
 	}
 
 }
