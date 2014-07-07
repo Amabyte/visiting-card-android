@@ -3,6 +3,7 @@ package com.matrix.visitingcard.user;
 import android.content.Context;
 
 import com.matrix.visitingcard.constant.Constants;
+import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 
 public class User {
@@ -25,6 +26,11 @@ public class User {
 
 		}
 		return instance;
+	}
+
+	public synchronized static void setInstance(User user) {
+		instance = user;
+		VLogger.i("Overriding user singlton class");
 	}
 
 	public boolean isNewUser() {

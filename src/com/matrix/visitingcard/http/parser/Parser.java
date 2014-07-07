@@ -182,4 +182,29 @@ public class Parser {
 		return vcs;
 	}
 
+	public static User parseUser(byte[] content) {
+		if (content == null || content.length == 0) {
+			VLogger.e("content is null");
+			return null;
+		}
+
+		User user = User.getInstance();
+
+		try {
+			JSONObject jsonObject = new JSONObject(new String(content));
+
+			user.setNewUser(false);
+			user.setId(jsonObject.getString("id"));
+			user.setName(jsonObject.getString("name"));
+			user.setCreatedAt(jsonObject.getString("created_at"));
+			user.setUpdatedAt(jsonObject.getString("updated_at"));
+			user.setEmail(jsonObject.getString("email"));
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return user;
+	}
+
 }

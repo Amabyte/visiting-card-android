@@ -22,6 +22,7 @@ import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.FriendsVC;
 import com.matrix.visitingcard.http.response.MyVC;
 import com.matrix.visitingcard.logger.VLogger;
+import com.matrix.visitingcard.user.User;
 import com.matrix.visitingcard.util.SharedPrefs;
 import com.matrix.visitingcard.util.Util;
 
@@ -38,9 +39,45 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		setContentView(R.layout.activity_home_screen);
 		initialize();
 		initializeViews();
+		loadUserData();
 		getAllFriendsVC();
 	}
 
+	private void loadUserData() {
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
+				"profile", "url.properties");
+
+		mAsyncHttp.addHeader("Cookie",
+				sp.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+		ARHandlerGetProfile handler = new ARHandlerGetProfile();
+
+		mAsyncHttp.communicate(connectionProperties, null, null, handler);
+	}
+
+
+	class ARHandlerGetProfile extends AsyncHttpResponseHandler {
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
+
+			VLogger.e("Get profile ConnectionSuccessful, status code " + statusCode
+					+ "content "
+					+ (content == null ? "null" : new String(content)));
+			User.setInstance(Parser.parseUser(content));
+
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] arg1, byte[] response,
+				Throwable arg3) {
+			VLogger.e("Connection Failed, status code " + statusCode
+					+ " response "
+					+ (response == null ? "null" : new String(response)));
+
+		}
+
+	}
+	
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
