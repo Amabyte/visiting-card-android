@@ -1,8 +1,5 @@
 package com.matrix.visitingcard;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.http.Header;
 
 import android.app.Activity;
@@ -23,11 +20,8 @@ import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.MyVC;
 import com.matrix.visitingcard.logger.VLogger;
-import com.matrix.visitingcard.util.CustomImageDownaloder;
 import com.matrix.visitingcard.util.SharedPrefs;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.matrix.visitingcard.util.Util;
 
 public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
@@ -48,25 +42,10 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
-		addHeadersToUIL();
+		Util.addHeadersToUIL(this);
 	}
 
-	private void addHeadersToUIL() {
-		Map<String, String> headers = new HashMap<String, String>();
-		headers.put("Cookie", SharedPrefs.getInstance(this)
-				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
-		ImageLoader.getInstance().destroy();
 
-		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-				.cacheInMemory(true).cacheOnDisk(true)
-				.extraForDownloader(headers).build();
-
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				this).defaultDisplayImageOptions(defaultOptions)
-				.imageDownloader(new CustomImageDownaloder(this)).build();
-
-		ImageLoader.getInstance().init(config);
-	}
 
 	@Override
 	protected void onDestroy() {

@@ -1,12 +1,33 @@
 package com.matrix.visitingcard.util;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
+import java.util.Map;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.view.View;
+import android.content.Context;
+
+import com.matrix.visitingcard.constant.Constants;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class Util {
+	
+	public static void addHeadersToUIL(Context context) {
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Cookie", SharedPrefs.getInstance(context)
+				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+		ImageLoader.getInstance().destroy();
+
+		DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+				.cacheInMemory(true).cacheOnDisk(true)
+				.extraForDownloader(headers).build();
+
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context).defaultDisplayImageOptions(defaultOptions)
+				.imageDownloader(new CustomImageDownaloder(context)).build();
+
+		ImageLoader.getInstance().init(config);
+	}
 //	private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
 //
 //	/**
