@@ -25,8 +25,10 @@ import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.user.User;
 import com.matrix.visitingcard.util.SharedPrefs;
 import com.matrix.visitingcard.util.Util;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class HomeScreenActivity extends Activity implements OnClickListener, OnItemClickListener {
+public class HomeScreenActivity extends Activity implements OnClickListener,
+		OnItemClickListener {
 
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
@@ -54,14 +56,13 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		mAsyncHttp.communicate(connectionProperties, null, null, handler);
 	}
 
-
 	class ARHandlerGetProfile extends AsyncHttpResponseHandler {
 
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
 
-			VLogger.e("Get profile ConnectionSuccessful, status code " + statusCode
-					+ "content "
+			VLogger.e("Get profile ConnectionSuccessful, status code "
+					+ statusCode + "content "
 					+ (content == null ? "null" : new String(content)));
 			User.setInstance(Parser.parseUser(content));
 
@@ -77,16 +78,19 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		}
 
 	}
-	
+
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
 		Util.addHeadersToUIL(this);
 	}
+
 	private void setAdapter() {
-		mAdapter = new VCAdapter(this, R.layout.list_item_vc, FriendsVC.getAllVC());
+		mAdapter = new VCAdapter(this, R.layout.list_item_vc,
+				FriendsVC.getAllVC());
 		mListViewVC.setAdapter(mAdapter);
 	}
+
 	@Override
 	protected void onDestroy() {
 		mAsyncHttp.cancelAllRequests(true);
@@ -99,7 +103,7 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		findViewById(R.id.bViewMyVC).setOnClickListener(this);
 		findViewById(R.id.bSignout).setOnClickListener(this);
 
-		mListViewVC =(ListView)findViewById(R.id.lvListVC);
+		mListViewVC = (ListView) findViewById(R.id.lvListVC);
 		mListViewVC.setOnItemClickListener(this);
 	}
 
@@ -142,8 +146,12 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 					+ "content "
 					+ (content == null ? "null" : new String(content)));
 			sp.destroy();
-			//TODO : clear GCM shit
-
+			ImageLoader.getInstance().clearDiskCache();
+			ImageLoader.getInstance().clearMemoryCache();
+			// TODO : clear GCM shit
+			finish();
+			startActivity(new Intent(HomeScreenActivity.this,
+					SplashScreenActivity.class));
 		}
 
 		@Override
@@ -157,8 +165,6 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 
 	}
 
-	
-	
 	private void getAllFriendsVC() {
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
 				"friend_vc", "url.properties");
@@ -175,9 +181,9 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
 
-//			VLogger.e("ConnectionSuccessful, status code " + statusCode
-//					+ "content "
-//					+ (content == null ? "null" : new String(content)));
+			// VLogger.e("ConnectionSuccessful, status code " + statusCode
+			// + "content "
+			// + (content == null ? "null" : new String(content)));
 			FriendsVC.setVCS(Parser.parseVC(content));
 
 			setAdapter();
@@ -193,16 +199,16 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		}
 
 	}
-	
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		Intent i = new Intent(HomeScreenActivity.this, ViewVC.class);
 		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
-		i.putExtra(Constants.Intent.CALLER, Constants.Intent.Values.CALLER_FRIENDVC);
+		i.putExtra(Constants.Intent.CALLER,
+				Constants.Intent.Values.CALLER_FRIENDVC);
 		startActivity(i);
-		
+
 	}
 
 }
