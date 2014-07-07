@@ -138,9 +138,9 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
 
-			VLogger.e("ConnectionSuccessful, status code " + statusCode
-					+ "content "
-					+ (content == null ? "null" : new String(content)));
+//			VLogger.e("ConnectionSuccessful, status code " + statusCode
+//					+ "content "
+//					+ (content == null ? "null" : new String(content)));
 			FriendsVC.setVCS(Parser.parseVC(content));
 
 			setAdapter();
@@ -161,7 +161,10 @@ public class HomeScreenActivity extends Activity implements OnClickListener, OnI
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
+		Intent i = new Intent(HomeScreenActivity.this, ViewVC.class);
+		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+		i.putExtra(Constants.Intent.CALLER, Constants.Intent.Values.CALLER_FRIENDVC);
+		startActivity(i);
 		
 	}
 

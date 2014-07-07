@@ -18,6 +18,7 @@ import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.request.ShareVCResquest;
+import com.matrix.visitingcard.http.response.FriendsVC;
 import com.matrix.visitingcard.http.response.MyVC;
 import com.matrix.visitingcard.http.response.VC;
 import com.matrix.visitingcard.logger.VLogger;
@@ -29,6 +30,7 @@ public class ViewVC extends Activity implements OnClickListener {
 	private ImageView ivVC;
 	private SharedPrefs sp;
 	private AsyncHttp mAsyncHttp;
+	private boolean showShareButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +52,10 @@ public class ViewVC extends Activity implements OnClickListener {
 
 	private void initializeViews() {
 		ivVC = (ImageView) findViewById(R.id.ivMyVc);
-		findViewById(R.id.bShareVc).setOnClickListener(this);
-		mAsyncHttp = AsyncHttp.getNewInstance();
-		sp = SharedPrefs.getInstance(this);
+		Button bShare = (Button) findViewById(R.id.bShareVc);
+		bShare.setOnClickListener(this);
+
+		bShare.setVisibility(showShareButton ? View.VISIBLE : View.INVISIBLE);
 
 	}
 
@@ -64,7 +67,25 @@ public class ViewVC extends Activity implements OnClickListener {
 
 	private void initialize() {
 		int id = getIntent().getIntExtra(Constants.Intent.MY_VC_LIST_ID, 0);
-		vc = MyVC.getAllVC().get(id);
+		String whoIsCalling = getIntent().getStringExtra(
+				Constants.Intent.CALLER);
+
+		if (whoIsCalling != null
+				&& whoIsCalling
+						.equalsIgnoreCase(Constants.Intent.Values.CALLER_MYVC)) {
+			vc = MyVC.getAllVC().get(id);
+			showShareButton = true;
+		} else if (whoIsCalling != null
+				&& whoIsCalling
+						.equalsIgnoreCase(Constants.Intent.Values.CALLER_FRIENDVC)) {
+			vc = FriendsVC.getAllVC().get(id);
+			showShareButton = false;
+		} else {
+			VLogger.e("Caller not identified");
+		}
+
+		mAsyncHttp = AsyncHttp.getNewInstance();
+		sp = SharedPrefs.getInstance(this);
 	}
 
 	@Override

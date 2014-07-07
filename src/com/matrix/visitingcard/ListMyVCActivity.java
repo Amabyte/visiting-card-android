@@ -45,8 +45,6 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 		Util.addHeadersToUIL(this);
 	}
 
-
-
 	@Override
 	protected void onDestroy() {
 		mAsyncHttp.cancelAllRequests(true);
@@ -104,6 +102,7 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 			long id) {
 		Intent i = new Intent(ListMyVCActivity.this, ViewVC.class);
 		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+		i.putExtra(Constants.Intent.CALLER, Constants.Intent.Values.CALLER_MYVC);
 		startActivity(i);
 	}
 }

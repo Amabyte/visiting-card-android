@@ -9,6 +9,12 @@ public class Constants {
 	public class Intent {
 		public static final String HOME_TO_VC = "intent_homescreen_to_create_vc";
 		public static final String MY_VC_LIST_ID = "my_list_vc_id";
+		public static final String CALLER = "who_is_calling_me";
+
+		public class Values {
+			public static final String CALLER_FRIENDVC = "show_friends_vc";
+			public static final String CALLER_MYVC = "show_my_vc";
+		}
 	}
 
 	public class SP {
