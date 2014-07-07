@@ -1,5 +1,9 @@
 package com.matrix.visitingcard.user;
 
+import android.content.Context;
+
+import com.matrix.visitingcard.constant.Constants;
+import com.matrix.visitingcard.util.SharedPrefs;
 
 public class User {
 
@@ -69,6 +73,11 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public static boolean isSignedIn(Context context) {
+		return SharedPrefs.getInstance(context).getSharedPrefsValueString(
+				Constants.SP.SESSION_ID, null) != null;
 	}
 
 }
