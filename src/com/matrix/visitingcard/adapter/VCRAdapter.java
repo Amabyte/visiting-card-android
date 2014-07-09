@@ -48,6 +48,8 @@ public class VCRAdapter extends SupportArrayAdapter<VCR> {
 				@Override
 				public void onClick(View v) {
 					VCR tvcr = getItem((Integer) v.getTag());
+					tvcr.decline(activity);
+					
 				}
 			});
 			convertView.setTag(holder);

@@ -109,4 +109,12 @@ public class ListMyVCRActivity extends Activity implements
 	public void reloadUi() {
 		getAllMyVC();
 	}
+
+	public AsyncH getAsyncHttp() {
+		return mAsyncHttp;
+	}
+
+	public SharedPrefs getSp() {
+		return sp;
+	}
 }
