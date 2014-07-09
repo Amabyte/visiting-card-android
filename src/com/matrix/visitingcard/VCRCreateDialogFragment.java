@@ -1,9 +1,8 @@
 package com.matrix.visitingcard;
 
-import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -14,17 +13,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
+import com.matrix.visitingcard.http.ProgressJSONResponseCallBack;
+import com.matrix.visitingcard.http.ProgressJsonHttpResponseHandler;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 
 public class VCRCreateDialogFragment extends DialogFragment implements
-		OnClickListener {
+		OnClickListener, ProgressJSONResponseCallBack {
 
 	private EditText emailEditText, messsageEditText;
 	private Button createVCRButton;
@@ -80,44 +80,9 @@ public class VCRCreateDialogFragment extends DialogFragment implements
 		if (message == null || message.equals(""))
 			params.put("message", message);
 		VLogger.e(params.toString());
-		final ProgressDialog dialog = new ProgressDialog(getActivity());
 		mAsyncHttp.generatePostRequestTemperoryMethod(
 				connectionProperties.baseURL, null, params,
-				new JsonHttpResponseHandler() {
-					@Override
-					public void onStart() {
-						dialog.setMessage("Please wait...");
-						dialog.setCancelable(false);
-						dialog.show();
-						super.onStart();
-					}
-
-					@Override
-					public void onSuccess(int statusCode, Header[] headers,
-							JSONObject response) {
-						super.onSuccess(statusCode, headers, response);
-						Toast.makeText(getActivity(), "VCR created",
-								Toast.LENGTH_SHORT).show();
-						dismiss();
-					}
-
-					@Override
-					public void onFailure(int statusCode, Header[] headers,
-							String responseString, Throwable throwable) {
-						super.onFailure(statusCode, headers, responseString,
-								throwable);
-						Toast.makeText(getActivity(), "Error : " + statusCode,
-								Toast.LENGTH_SHORT).show();
-					}
-
-					@Override
-					public void onFinish() {
-						super.onFinish();
-						if (dialog != null && dialog.isShowing()) {
-							dialog.dismiss();
-						}
-					}
-				});
+				new ProgressJsonHttpResponseHandler(getActivity(), this));
 	}
 
 	private void initialize() {
@@ -129,4 +94,34 @@ public class VCRCreateDialogFragment extends DialogFragment implements
 		mAsyncHttp.cancelAllRequests(true);
 		super.onDestroy();
 	}
+
+	@Override
+	public void onAsyncSuccess(JSONObject jsonObject) {
+		Toast.makeText(getActivity(), "VCR created", Toast.LENGTH_SHORT).show();
+		dismiss();
+	}
+
+	@Override
+	public void onAsyncFailure(int status, JSONObject jsonObject) {
+		onAsyncFailure(status, jsonObject.toString());
+	}
+
+	@Override
+	public void onAsyncFailure(int status, String string) {
+		Toast.makeText(getActivity(), "Error : " + status, Toast.LENGTH_SHORT)
+				.show();
+	}
+
+	@Override
+	public void onAsyncStart() {
+	}
+
+	@Override
+	public void onAsyncFinish() {
+	}
+
+	@Override
+	public void onAsyncSuccess(JSONArray jsonArray) {
+	}
+
 }
