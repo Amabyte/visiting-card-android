@@ -2,9 +2,9 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,21 +14,19 @@ import android.widget.ListView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
-import com.matrix.visitingcard.ListMyVCActivity.ARHandlerGetMyVC;
 import com.matrix.visitingcard.adapter.VCAdapter;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.FriendsVC;
-import com.matrix.visitingcard.http.response.MyVC;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.user.User;
 import com.matrix.visitingcard.util.SharedPrefs;
 import com.matrix.visitingcard.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class HomeScreenActivity extends Activity implements OnClickListener,
-		OnItemClickListener {
+public class HomeScreenActivity extends FragmentActivity implements
+		OnClickListener, OnItemClickListener {
 
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
@@ -102,6 +100,8 @@ public class HomeScreenActivity extends Activity implements OnClickListener,
 		findViewById(R.id.bCreateNewVC).setOnClickListener(this);
 		findViewById(R.id.bViewMyVC).setOnClickListener(this);
 		findViewById(R.id.bSignout).setOnClickListener(this);
+		findViewById(R.id.bCreateVCR).setOnClickListener(this);
+		findViewById(R.id.bAllVCR).setOnClickListener(this);
 
 		mListViewVC = (ListView) findViewById(R.id.lvListVC);
 		mListViewVC.setOnItemClickListener(this);
@@ -121,7 +121,17 @@ public class HomeScreenActivity extends Activity implements OnClickListener,
 		case R.id.bSignout:
 			signout();
 			break;
+		case R.id.bCreateVCR:
+			createVCR();
+			break;
+		case R.id.bAllVCR:
+			break;
 		}
+	}
+
+	private void createVCR() {
+		VCRCreateDialogFragment createVCRDialogFragment = new VCRCreateDialogFragment();
+		createVCRDialogFragment.show(getSupportFragmentManager(), "creat_vcr");
 	}
 
 	private void signout() {

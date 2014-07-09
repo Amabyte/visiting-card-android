@@ -1,35 +1,61 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <Button
-        android:id="@+id/bCreateNewVC"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create VC" />
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bCreateNewVC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Create VC" />
+
+        <Button
+            android:id="@+id/bViewMyVC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="View My Cards" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bSignout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="SigOut" />
+
+        <Button
+            android:id="@+id/bCreateVCR"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Create VCR" />
+
+        <Button
+            android:id="@+id/bAllVCR"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Create VCR" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lvListVC"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/bCreateNewVC" >
+        android:layout_height="match_parent" >
     </ListView>
 
-    <Button
-        android:id="@+id/bViewMyVC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="View My Cards" />
-
-    <Button
-        android:id="@+id/bSignout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lvListVC"
-        android:layout_toLeftOf="@+id/bViewMyVC"
-        android:text="SigOut" />
-
-</RelativeLayout>
+</LinearLayout>
