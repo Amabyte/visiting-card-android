@@ -51,6 +51,10 @@
             android:label="@string/title_activity_list_my_vc" >
         </activity>
         <activity
+            android:name=".ListMyVCRActivity"
+            android:label="@string/title_activity_list_my_vc" >
+        </activity>
+        <activity
             android:name=".SplashScreenActivity"
             android:label="@string/title_activity_splash_screen" >
             <intent-filter>

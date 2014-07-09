@@ -125,6 +125,8 @@ public class HomeScreenActivity extends FragmentActivity implements
 			createVCR();
 			break;
 		case R.id.bAllVCR:
+			startActivity(new Intent(HomeScreenActivity.this,
+					ListMyVCRActivity.class));
 			break;
 		}
 	}

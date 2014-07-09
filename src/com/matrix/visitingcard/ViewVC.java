@@ -11,12 +11,9 @@ import android.widget.ImageView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.model.CallProperties;
-import com.matrix.asynchttplibrary.request.AsyncRequestParam;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
-import com.matrix.visitingcard.HomeScreenActivity.ARHandlerSignout;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
-import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.request.ShareVCResquest;
 import com.matrix.visitingcard.http.response.FriendsVC;
 import com.matrix.visitingcard.http.response.MyVC;
