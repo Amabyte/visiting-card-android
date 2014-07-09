@@ -1,27 +1,27 @@
 package com.matrix.visitingcard.adapter;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.http.response.VCR;
 
-public class VCRAdapter extends ArrayAdapter<VCR> {
+public class VCRAdapter extends SupportArrayAdapter<VCR> {
 	private LayoutInflater mInflater;
+	private Activity activity;
 
-	public VCRAdapter(Context context, List<VCR> items) {
-		super(context, android.R.layout.simple_list_item_1, items);
-		this.mInflater = (LayoutInflater) context
+	public VCRAdapter(Activity activity, ArrayList<VCR> items) {
+		super(activity, items);
+		this.mInflater = (LayoutInflater) activity
 				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+		this.activity = activity;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {

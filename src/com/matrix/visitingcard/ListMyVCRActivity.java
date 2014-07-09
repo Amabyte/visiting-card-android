@@ -18,12 +18,13 @@ import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.ProgressJSONResponseCallBack;
 import com.matrix.visitingcard.http.ProgressJsonHttpResponseHandler;
+import com.matrix.visitingcard.http.UIReloadCallBack;
 import com.matrix.visitingcard.http.response.VCR;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 
 public class ListMyVCRActivity extends Activity implements
-		ProgressJSONResponseCallBack {
+		ProgressJSONResponseCallBack, UIReloadCallBack {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewVCR;
 	private VCRAdapter mAdapter;
@@ -49,13 +50,14 @@ public class ListMyVCRActivity extends Activity implements
 		super.onDestroy();
 	}
 
-	private void setAdapter(ArrayList<VCR> items) {
-		mAdapter = new VCRAdapter(this, items);
+	private void setAdapter() {
+		mAdapter = new VCRAdapter(this, new ArrayList<VCR>());
 		mListViewVCR.setAdapter(mAdapter);
 	}
 
 	private void initializeViews() {
 		mListViewVCR = (ListView) findViewById(R.id.lvVRC);
+		setAdapter();
 	}
 
 	private void getAllMyVC() {
@@ -79,7 +81,7 @@ public class ListMyVCRActivity extends Activity implements
 				VLogger.e(e.getMessage());
 			}
 		}
-		setAdapter(vcrs);
+		mAdapter.supportAddAll(vcrs);
 	}
 
 	@Override
@@ -101,5 +103,10 @@ public class ListMyVCRActivity extends Activity implements
 
 	@Override
 	public void onAsyncFinish() {
+	}
+
+	@Override
+	public void reloadUi() {
+		getAllMyVC();
 	}
 }
