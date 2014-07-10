@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,13 +32,16 @@ import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
+import com.matrix.visitingcard.http.ProgressJSONResponseCallBack;
+import com.matrix.visitingcard.http.ProgressJsonHttpResponseHandler;
 import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.http.response.VCTResponse.KeysAndTypes;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.FileUtil;
 import com.matrix.visitingcard.util.SharedPrefs;
 
-public class CreateVCActivity extends Activity {
+public class CreateVCActivity extends Activity implements
+		ProgressJSONResponseCallBack {
 	private int vctId;
 	private VCTResponse vct;
 	private AsyncHttp mAsyncHttp;
@@ -179,7 +184,8 @@ public class CreateVCActivity extends Activity {
 		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
 				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
 
-		ARHandlerCreateVC handler = new ARHandlerCreateVC();
+		ProgressJsonHttpResponseHandler handler = new ProgressJsonHttpResponseHandler(
+				this, this);
 
 		RequestParams params = new RequestParams();
 
@@ -208,7 +214,7 @@ public class CreateVCActivity extends Activity {
 				}
 				try {
 					image = new File(filePath);
-					VLogger.e("path "+filePath);
+					VLogger.e("path " + filePath);
 					mimeType = FileUtil.getMimeType(image.getAbsolutePath());
 
 					params.put(String.format(PARAM_KEY, i), kt.getKey());
@@ -228,31 +234,6 @@ public class CreateVCActivity extends Activity {
 				connectionProperties.baseURL, null, params, handler);
 	}
 
-	class ARHandlerCreateVC extends AsyncHttpResponseHandler {
-
-		@Override
-		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
-
-			VLogger.e("ConnectionSuccessful, status code " + statusCode
-					+ "content "
-					+ (content == null ? "null" : new String(content)));
-			Toast.makeText(CreateVCActivity.this, "Visiting Card Created",
-					Toast.LENGTH_LONG).show();
-
-			CreateVCActivity.this.finish();
-		}
-
-		@Override
-		public void onFailure(int statusCode, Header[] arg1, byte[] response,
-				Throwable arg3) {
-			VLogger.e("Connection Failed, status code " + statusCode
-					+ " response "
-					+ (response == null ? "null" : new String(response)));
-
-		}
-
-	}
-
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 	}
@@ -261,6 +242,35 @@ public class CreateVCActivity extends Activity {
 	protected void onDestroy() {
 		mAsyncHttp.cancelAllRequests(true);
 		super.onDestroy();
+	}
+
+	@Override
+	public void onAsyncStart() {
+	}
+
+	@Override
+	public void onAsyncFinish() {
+	}
+
+	@Override
+	public void onAsyncSuccess(JSONArray jsonArray) {
+	}
+
+	@Override
+	public void onAsyncSuccess(JSONObject jsonObject) {
+		Toast.makeText(getApplicationContext(), "VC Created",
+				Toast.LENGTH_SHORT).show();
+		CreateVCActivity.this.finish();
+	}
+
+	@Override
+	public void onAsyncFailure(int status, String string) {
+		VLogger.e("Connection Failed, status code " + status + " response "
+				+ (string == null ? "null" : new String(string)));
+	}
+
+	@Override
+	public void onAsyncFailure(int status, JSONObject jsonObject) {
 	}
 
 }
