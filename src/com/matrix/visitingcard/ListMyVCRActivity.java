@@ -126,7 +126,7 @@ public class ListMyVCRActivity extends Activity implements
 		if (resultCode == Activity.RESULT_OK)
 			if (lastVCR != null)
 				lastVCR.accept(this,
-						data.getIntExtra(Constants.Intent.VCR_ID, -1));
+						data.getIntExtra(Constants.Intent.VC_ID, -1));
 	}
 
 	public void acceptVCR(VCR vcr) {

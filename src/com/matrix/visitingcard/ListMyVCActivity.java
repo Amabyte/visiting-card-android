@@ -105,7 +105,7 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 				&& caller
 						.equals(Constants.Intent.Values.CALLER_MYVC_FOR_RESULT)) {
 			Intent resultIntent = new Intent();
-			resultIntent.putExtra(Constants.Intent.VCR_ID, MyVC.getAllVC().get((int) id).getId());
+			resultIntent.putExtra(Constants.Intent.VC_ID, MyVC.getAllVC().get((int) id).getId());
 			setResult(Activity.RESULT_OK, resultIntent);
 			finish();
 		} else {

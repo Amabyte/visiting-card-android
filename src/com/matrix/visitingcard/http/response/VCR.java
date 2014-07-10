@@ -95,8 +95,10 @@ public class VCR {
 
 							@Override
 							public void onAsyncFailure(int status, String string) {
-								Toast.makeText(vcrActivity,
-										"Error : " + status, Toast.LENGTH_SHORT)
+								Toast.makeText(
+										vcrActivity,
+										"Error : " + status + " Details : "
+												+ string, Toast.LENGTH_SHORT)
 										.show();
 							}
 
@@ -151,8 +153,10 @@ public class VCR {
 
 							@Override
 							public void onAsyncFailure(int status, String string) {
-								Toast.makeText(vcrActivity,
-										"Error : " + status, Toast.LENGTH_SHORT)
+								Toast.makeText(
+										vcrActivity,
+										"Error : " + status + " Details : "
+												+ string, Toast.LENGTH_SHORT)
 										.show();
 							}
 
