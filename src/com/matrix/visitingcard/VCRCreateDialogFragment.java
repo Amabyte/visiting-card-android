@@ -77,7 +77,7 @@ public class VCRCreateDialogFragment extends DialogFragment implements
 
 		RequestParams params = new RequestParams();
 		params.put("email", email);
-		if (message == null || message.equals(""))
+		if (message != null && !message.equals(""))
 			params.put("message", message);
 		VLogger.e(params.toString());
 		mAsyncHttp.generatePostRequestTemperoryMethod(
