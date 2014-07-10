@@ -10,10 +10,12 @@ public class Constants {
 		public static final String HOME_TO_VC = "intent_homescreen_to_create_vc";
 		public static final String MY_VC_LIST_ID = "my_list_vc_id";
 		public static final String CALLER = "who_is_calling_me";
+		public static final String VCR_ID = "vc_id";
 
 		public class Values {
 			public static final String CALLER_FRIENDVC = "show_friends_vc";
 			public static final String CALLER_MYVC = "show_my_vc";
+			public static final String CALLER_MYVC_FOR_RESULT = "my_vc_for_result";
 		}
 	}
 

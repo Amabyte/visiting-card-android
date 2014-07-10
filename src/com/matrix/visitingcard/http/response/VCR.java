@@ -13,6 +13,7 @@ import com.matrix.visitingcard.ListMyVCRActivity;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.ProgressJSONResponseCallBack;
 import com.matrix.visitingcard.http.ProgressJsonHttpResponseHandler;
+import com.matrix.visitingcard.http.request.AcceptVCRResquest;
 
 public class VCR {
 	private long id;
@@ -75,8 +76,64 @@ public class VCR {
 
 							@Override
 							public void onAsyncSuccess(JSONObject jsonObject) {
-								Toast.makeText(vcrActivity, "VCR declined", Toast.LENGTH_SHORT)
+								Toast.makeText(vcrActivity, "VCR declined",
+										Toast.LENGTH_SHORT).show();
+								vcrActivity.reloadUi();
+							}
+
+							@Override
+							public void onAsyncSuccess(JSONArray jsonArray) {
+							}
+
+							@Override
+							public void onAsyncStart() {
+							}
+
+							@Override
+							public void onAsyncFinish() {
+							}
+
+							@Override
+							public void onAsyncFailure(int status, String string) {
+								Toast.makeText(vcrActivity,
+										"Error : " + status, Toast.LENGTH_SHORT)
 										.show();
+							}
+
+							@Override
+							public void onAsyncFailure(int status,
+									JSONObject jsonObject) {
+								onAsyncFailure(status, jsonObject.toString());
+							}
+						}));
+	}
+
+	public void accept(Activity activity, int vcId) {
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(
+				activity, "base", "url.properties");
+		connectionProperties.method = "POST";
+		connectionProperties.baseURL += (String.format(
+				"/visiting_card_requests/my/%s/accept.json", this.getId()));
+
+		final ListMyVCRActivity vcrActivity = (ListMyVCRActivity) activity;
+
+		vcrActivity.getAsyncHttp().addHeader(
+				"Cookie",
+				vcrActivity.getSp().getSharedPrefsValueString(
+						Constants.SP.SESSION_ID, null));
+		AcceptVCRResquest params = new AcceptVCRResquest(vcId);
+
+		vcrActivity.getAsyncHttp().communicate(
+				connectionProperties,
+				null,
+				params,
+				new ProgressJsonHttpResponseHandler(activity,
+						new ProgressJSONResponseCallBack() {
+
+							@Override
+							public void onAsyncSuccess(JSONObject jsonObject) {
+								Toast.makeText(vcrActivity, "VCR Accepted",
+										Toast.LENGTH_SHORT).show();
 								vcrActivity.reloadUi();
 							}
 

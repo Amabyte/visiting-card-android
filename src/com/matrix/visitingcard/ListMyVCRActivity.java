@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -29,6 +30,7 @@ public class ListMyVCRActivity extends Activity implements
 	private ListView mListViewVCR;
 	private VCRAdapter mAdapter;
 	private SharedPrefs sp;
+	private VCR lastVCR;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,5 +118,22 @@ public class ListMyVCRActivity extends Activity implements
 
 	public SharedPrefs getSp() {
 		return sp;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode == Activity.RESULT_OK)
+			if (lastVCR != null)
+				lastVCR.accept(this,
+						data.getIntExtra(Constants.Intent.VCR_ID, -1));
+	}
+
+	public void acceptVCR(VCR vcr) {
+		lastVCR = vcr;
+		Intent i = new Intent(this, ListMyVCActivity.class);
+		i.putExtra(Constants.Intent.CALLER,
+				Constants.Intent.Values.CALLER_MYVC_FOR_RESULT);
+		startActivityForResult(i, 1);
 	}
 }

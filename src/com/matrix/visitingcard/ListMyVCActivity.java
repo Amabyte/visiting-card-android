@@ -100,9 +100,20 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Intent i = new Intent(ListMyVCActivity.this, ViewVC.class);
-		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
-		i.putExtra(Constants.Intent.CALLER, Constants.Intent.Values.CALLER_MYVC);
-		startActivity(i);
+		String caller = getIntent().getStringExtra(Constants.Intent.CALLER);
+		if (caller != null
+				&& caller
+						.equals(Constants.Intent.Values.CALLER_MYVC_FOR_RESULT)) {
+			Intent resultIntent = new Intent();
+			resultIntent.putExtra(Constants.Intent.VCR_ID, MyVC.getAllVC().get((int) id).getId());
+			setResult(Activity.RESULT_OK, resultIntent);
+			finish();
+		} else {
+			Intent i = new Intent(ListMyVCActivity.this, ViewVC.class);
+			i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+			i.putExtra(Constants.Intent.CALLER,
+					Constants.Intent.Values.CALLER_MYVC);
+			startActivity(i);
+		}
 	}
 }
