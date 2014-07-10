@@ -7,14 +7,16 @@ import java.util.ArrayList;
 import org.apache.http.Header;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore.Files;
+import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -28,7 +30,6 @@ import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
-import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.http.response.VCTResponse.KeysAndTypes;
 import com.matrix.visitingcard.logger.VLogger;
@@ -58,6 +59,9 @@ public class CreateVCActivity extends Activity {
 
 	}
 
+	private final int SELECT_PHOTO = 1;
+	private View type[];
+
 	private void constructInputFields() {
 
 		LayoutInflater inflater = (LayoutInflater) this
@@ -71,7 +75,6 @@ public class CreateVCActivity extends Activity {
 			VLogger.e("rootview is null");
 			return;
 		}
-
 		final ArrayList<KeysAndTypes> keysAndTypes = vct.getKeysAndTypes();
 		if (keysAndTypes == null) {
 			VLogger.e("no values to be filled :-( ");
@@ -79,7 +82,7 @@ public class CreateVCActivity extends Activity {
 		}
 
 		int size = keysAndTypes.size();
-		final View type[] = new View[size];
+		type = new View[size];
 
 		for (int i = 0; i < size; i++) {
 
@@ -94,8 +97,19 @@ public class CreateVCActivity extends Activity {
 				((EditText) type[i]).setHint(kt.getKey());
 				break;
 			case IMAGE:
-				type[i] = inflater.inflate(R.layout.item_type_text, null);
-				((EditText) type[i]).setHint(kt.getKey());
+				type[i] = inflater.inflate(R.layout.item_type_button, null);
+
+				((Button) type[i]).setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						Intent photoPickerIntent = new Intent(
+								Intent.ACTION_PICK);
+						photoPickerIntent.setType("image/*");
+						startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+
+					}
+				});
 				break;
 			default:
 				break;
@@ -125,6 +139,33 @@ public class CreateVCActivity extends Activity {
 		rootView.addView(submit, params);
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent imageReturnedIntent) {
+		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+		switch (requestCode) {
+		case SELECT_PHOTO:
+			if (resultCode == RESULT_OK) {
+				String filePath = getRealPathFromURI(imageReturnedIntent
+						.getData());
+
+				type[type.length - 1].setTag(filePath);
+			}
+		}
+	}
+
+	private String getRealPathFromURI(Uri contentUri) {
+		String[] proj = { MediaStore.Images.Media.DATA };
+		CursorLoader loader = new CursorLoader(this, contentUri, proj, null,
+				null, null);
+		Cursor cursor = loader.loadInBackground();
+		int column_index = cursor
+				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		cursor.moveToFirst();
+		return cursor.getString(column_index);
+	}
+
 	protected void sendCollectedInfo(ArrayList<KeysAndTypes> keysAndTypes,
 			View[] views) {
 		VLogger.e("send collection");
@@ -137,7 +178,7 @@ public class CreateVCActivity extends Activity {
 
 		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
 				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
-		
+
 		ARHandlerCreateVC handler = new ARHandlerCreateVC();
 
 		RequestParams params = new RequestParams();
@@ -160,8 +201,14 @@ public class CreateVCActivity extends Activity {
 			case IMAGE:
 				File image;
 				String mimeType;
+				String filePath = null;
+				Object o = views[i].getTag();
+				if (o != null) {
+					filePath = (String) o;
+				}
 				try {
-					image = new File("/storage/emulated/0/VC/angry.png");
+					image = new File(filePath);
+					VLogger.e("path "+filePath);
 					mimeType = FileUtil.getMimeType(image.getAbsolutePath());
 
 					params.put(String.format(PARAM_KEY, i), kt.getKey());
