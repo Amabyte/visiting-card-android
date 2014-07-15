@@ -104,10 +104,10 @@ public class SignUpFormActivity extends Activity {
 			String scopes = "oauth2:profile email";
 			String token = null;
 			try {
-				VLogger.e("Before ");
+				// VLogger.e("Before ");
 				token = GoogleAuthUtil.getToken(getApplicationContext(),
 						accountName, scopes);
-				VLogger.e("After ");
+				// VLogger.e("After ");
 
 				VLogger.d("Token:" + token);
 			} catch (IOException e) {
@@ -187,6 +187,9 @@ public class SignUpFormActivity extends Activity {
 							header.getValue());
 				}
 			}
+			if (progressDialog != null && progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
 			launchHomeScreen();
 			// VLogger.e(User.getInstance().getEmail());
 			finish();
@@ -202,7 +205,10 @@ public class SignUpFormActivity extends Activity {
 
 			Toast.makeText(SignUpFormActivity.this,
 					"Unable to login please retry", Toast.LENGTH_LONG).show();
-			progressDialog.dismiss();
+			if (progressDialog != null && progressDialog.isShowing()) {
+				progressDialog.dismiss();
+			}
+
 		}
 
 	}

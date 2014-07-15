@@ -161,14 +161,17 @@ public class CreateVCActivity extends Activity implements
 	}
 
 	private String getRealPathFromURI(Uri contentUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
-		CursorLoader loader = new CursorLoader(this, contentUri, proj, null,
-				null, null);
-		Cursor cursor = loader.loadInBackground();
-		int column_index = cursor
-				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+		Cursor cursor = getContentResolver().query(contentUri, filePathColumn,
+				null, null, null);
 		cursor.moveToFirst();
-		return cursor.getString(column_index);
+
+		int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+		String filePath = cursor.getString(columnIndex);
+		cursor.close();
+		return filePath;
+
 	}
 
 	protected void sendCollectedInfo(ArrayList<KeysAndTypes> keysAndTypes,
