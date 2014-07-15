@@ -79,6 +79,13 @@ public class SignUpFormActivity extends Activity {
 
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK) {
+			new RetrieveTokenTask().execute(mAccountName);
+		}
+	}
+
 	private class RetrieveTokenTask extends AsyncTask<String, Void, String> {
 
 		@Override
@@ -97,8 +104,10 @@ public class SignUpFormActivity extends Activity {
 			String scopes = "oauth2:profile email";
 			String token = null;
 			try {
+				VLogger.e("Before ");
 				token = GoogleAuthUtil.getToken(getApplicationContext(),
 						accountName, scopes);
+				VLogger.e("After ");
 
 				VLogger.d("Token:" + token);
 			} catch (IOException e) {
@@ -116,10 +125,10 @@ public class SignUpFormActivity extends Activity {
 			super.onPostExecute(token);
 			VLogger.d("token recieved " + token);
 			if (token == null) {
-				VLogger.e("Unable to login please retry");
-				Toast.makeText(SignUpFormActivity.this,
-						"Unable to login please retry", Toast.LENGTH_LONG)
-						.show();
+				VLogger.e(" Post exec Unable to login please retry");
+				// Toast.makeText(SignUpFormActivity.this,
+				// "Unable to login please retry", Toast.LENGTH_LONG)
+				// .show();
 				return;
 			}
 			loginToVisitingCardServer(token);
