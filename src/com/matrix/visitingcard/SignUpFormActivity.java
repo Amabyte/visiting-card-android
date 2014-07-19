@@ -215,7 +215,7 @@ public class SignUpFormActivity extends Activity {
 
 	public void launchHomeScreen() {
 		startActivity(new Intent(SignUpFormActivity.this,
-				HomeScreenActivity.class));
+				ResideActivity.class));
 
 	}
 

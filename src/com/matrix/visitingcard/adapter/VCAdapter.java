@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.response.VC;
+import com.matrix.visitingcard.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class VCAdapter extends ArrayAdapter<VC> {
@@ -61,6 +62,7 @@ public class VCAdapter extends ArrayAdapter<VC> {
 	}
 
 	private void setImage(ImageView ivTemplate, String url) {
+		Util.addHeadersToUIL(getContext());
 		ImageLoader.getInstance().displayImage(url, ivTemplate);
 	}
 

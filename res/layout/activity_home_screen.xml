@@ -1,10 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.matrix.visitingcard.view.ImprovedStackView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/svAllVc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:loopViews="true" />
+<!--
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF0000"
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
-
+-->
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,11 +59,16 @@
             android:layout_weight="1"
             android:text="All VCR" />
     </LinearLayout>
+-->
 
+
+<!--
     <ListView
         android:id="@+id/lvListVC"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </ListView>
+-->
 
-</LinearLayout>
+
+<!-- </LinearLayout> -->

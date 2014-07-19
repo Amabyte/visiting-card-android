@@ -55,7 +55,7 @@ public class SplashScreenActivity extends Activity {
 		if (spValue == null || spValue.length() < 1) {
 			startActivity(new Intent(this, SignUpFormActivity.class));
 		} else {
-			startActivity(new Intent(this, HomeScreenActivity.class));
+			startActivity(new Intent(this, ResideActivity.class));
 		}
 		finish();
 	}
