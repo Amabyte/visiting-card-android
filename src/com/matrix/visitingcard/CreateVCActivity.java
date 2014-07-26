@@ -154,13 +154,14 @@ public class CreateVCActivity extends Activity implements
 		switch (requestCode) {
 		case SELECT_PHOTO:
 			if (resultCode == RESULT_OK) {
-				String filePath = getRealPathFromURI(imageReturnedIntent
-						.getData());
+				Uri uri = imageReturnedIntent.getData();
 
-				type[type.length - 1].setTag(filePath);
 				ImageView iv = (ImageView) type[type.length - 1]
 						.findViewById(R.id.ivImageSelected);
-				iv.setImageURI(imageReturnedIntent.getData());
+				iv.setImageURI(uri);
+
+				String filePath = getRealPathFromURI(uri);
+				type[type.length - 1].setTag(filePath);
 
 			}
 		}
@@ -168,7 +169,6 @@ public class CreateVCActivity extends Activity implements
 
 	private String getRealPathFromURI(Uri contentUri) {
 		String[] filePathColumn = { MediaStore.Images.Media.DATA };
-
 		Cursor cursor = getContentResolver().query(contentUri, filePathColumn,
 				null, null, null);
 		cursor.moveToFirst();
