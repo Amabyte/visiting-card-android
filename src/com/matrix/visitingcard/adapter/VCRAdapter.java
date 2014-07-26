@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.matrix.visitingcard.ListMyVCActivity;
+import com.matrix.visitingcard.ListMyVCFragment;
 import com.matrix.visitingcard.ListMyVCRActivity;
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.constant.Constants;

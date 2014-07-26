@@ -2,10 +2,12 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -23,47 +25,51 @@ import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 import com.matrix.visitingcard.util.Util;
 
-public class ListMyVCActivity extends Activity implements OnItemClickListener {
+public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewMyVC;
 	private VCAdapter mAdapter;
 	private SharedPrefs sp;
+	private View parentView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_my_vc);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		parentView = inflater.inflate(R.layout.activity_list_my_vc, container,
+				false);
 		initialize();
 		initializeViews();
 		getAllMyVC();
+		
+		return parentView;
 
 	}
 
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
-		sp = SharedPrefs.getInstance(this);
-		Util.addHeadersToUIL(this);
+		sp = SharedPrefs.getInstance(getActivity());
+		Util.addHeadersToUIL(getActivity());
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroyView() {
 		mAsyncHttp.cancelAllRequests(true);
-		super.onDestroy();
+		super.onDestroyView();
 	}
 
 	private void setAdapter() {
-		mAdapter = new VCAdapter(this, R.layout.list_item_vc, MyVC.getAllVC());
+		mAdapter = new VCAdapter(getActivity(), R.layout.list_item_vc, MyVC.getAllVC());
 		mListViewMyVC.setAdapter(mAdapter);
 	}
 
 	private void initializeViews() {
-		mListViewMyVC = (ListView) findViewById(R.id.lvMyVC);
+		mListViewMyVC = (ListView) parentView.findViewById(R.id.lvMyVC);
 		mListViewMyVC.setOnItemClickListener(this);
 
 	}
 
 	private void getAllMyVC() {
-		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(getActivity(),
 				"my_vc", "url.properties");
 
 		mAsyncHttp.addHeader("Cookie",
@@ -100,16 +106,17 @@ public class ListMyVCActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		String caller = getIntent().getStringExtra(Constants.Intent.CALLER);
-		if (caller != null
-				&& caller
-						.equals(Constants.Intent.Values.CALLER_MYVC_FOR_RESULT)) {
-			Intent resultIntent = new Intent();
-			resultIntent.putExtra(Constants.Intent.VC_ID, MyVC.getAllVC().get((int) id).getId());
-			setResult(Activity.RESULT_OK, resultIntent);
-			finish();
-		} else {
-			Intent i = new Intent(ListMyVCActivity.this, ViewVC.class);
+//		String caller = getIntent().getStringExtra(Constants.Intent.CALLER);
+//		if (caller != null
+//				&& caller
+//						.equals(Constants.Intent.Values.CALLER_MYVC_FOR_RESULT)) {
+//			Intent resultIntent = new Intent();
+//			resultIntent.putExtra(Constants.Intent.VC_ID, MyVC.getAllVC().get((int) id).getId());
+//			setResult(Activity.RESULT_OK, resultIntent);
+//			finish();
+//		} else
+		{
+			Intent i = new Intent(getActivity(), ViewVC.class);
 			i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
 			i.putExtra(Constants.Intent.CALLER,
 					Constants.Intent.Values.CALLER_MYVC);

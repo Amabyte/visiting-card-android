@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/menu_background"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="${packageName}.${activityClass}" >
@@ -10,20 +11,31 @@
         android:id="@+id/txtLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="5dp"
         android:text="choose an account"
+        android:textColor="@android:color/white"
         android:textSize="16sp" />
 
-    <Spinner
-        android:id="@+id/spinnerAccount"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp"
+        android:background="#99FFFFFF"
+        android:gravity="center" >
+
+        <Spinner
+            android:id="@+id/spinnerAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+    </LinearLayout>
 
     <Button
+        android:layout_marginTop="10dp"
         android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Login" />
+        android:background="@drawable/sign_in_with_google"
+        android:gravity="center" />
 
 </LinearLayout>

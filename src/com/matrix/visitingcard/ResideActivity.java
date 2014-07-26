@@ -3,6 +3,7 @@ package com.matrix.visitingcard;
 import org.apache.http.Header;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +20,8 @@ import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.user.User;
 import com.matrix.visitingcard.util.SharedPrefs;
+import com.matrix.visitingcard.util.Util;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 
@@ -30,6 +33,9 @@ public class ResideActivity extends FragmentActivity implements
 	private ResideMenuItem itemHome;
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
+	private ResideMenuItem itemMyVc;
+	private ResideMenuItem itemCreateVc;
+	private ResideMenuItem itemSignout;
 
 	/**
 	 * Called when the activity is first created.
@@ -40,7 +46,8 @@ public class ResideActivity extends FragmentActivity implements
 		setContentView(R.layout.main);
 
 		initialize();
-
+		loadUserData();
+		Util.addHeadersToUIL(this);
 		mContext = this;
 
 		setUpMenu();
@@ -65,11 +72,25 @@ public class ResideActivity extends FragmentActivity implements
 		resideMenu.setScaleValue(0.6f);
 
 		// create menu items;
-		itemHome = new ResideMenuItem(this, R.drawable.ic_launcher, "Home");
-
+		itemHome = new ResideMenuItem(this, R.drawable.friend_vc_icon,
+				"Received VCs");
 		itemHome.setOnClickListener(this);
 
+		itemMyVc = new ResideMenuItem(this, R.drawable.my_vcs_icon, "My VCs");
+		itemMyVc.setOnClickListener(this);
+
+		itemCreateVc = new ResideMenuItem(this, R.drawable.create_new_vc_icon,
+				"Create VC");
+		itemCreateVc.setOnClickListener(this);
+
+		itemSignout = new ResideMenuItem(this, R.drawable.signout_icon,
+				"Sign Out");
+		itemSignout.setOnClickListener(this);
+
 		resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
+		resideMenu.addMenuItem(itemMyVc, ResideMenu.DIRECTION_LEFT);
+		resideMenu.addMenuItem(itemCreateVc, ResideMenu.DIRECTION_LEFT);
+		resideMenu.addMenuItem(itemSignout, ResideMenu.DIRECTION_LEFT);
 
 		resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
 
@@ -89,16 +110,20 @@ public class ResideActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onClick(View view) {
+	public void onClick(View v) {
 
-		if (view == itemHome) {
+		if (v == itemHome) {
 			changeFragment(new AllVCFragment());
+		} else if (v == itemMyVc) {
+			changeFragment(new ListMyVCFragment());
+		} else if (v == itemCreateVc) {
+			changeFragment(new ListOfVCTActivity());
+		} else if (v == itemSignout) {
+			signout();
 		}
 
 		resideMenu.closeMenu();
 	}
-
-
 
 	private void changeFragment(Fragment targetFragment) {
 		resideMenu.clearIgnoredViewList();
@@ -146,4 +171,47 @@ public class ResideActivity extends FragmentActivity implements
 		}
 
 	}
+
+	private void signout() {
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
+				"sign_out", "url.properties");
+
+		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
+				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
+
+		ARHandlerSignout handler = new ARHandlerSignout();
+
+		mAsyncHttp.communicate(connectionProperties, null, null, handler);
+
+	}
+
+	class ARHandlerSignout extends AsyncHttpResponseHandler {
+
+		@Override
+		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
+
+			VLogger.e("ConnectionSuccessful, status code " + statusCode
+					+ "content "
+					+ (content == null ? "null" : new String(content)));
+			sp.destroy();
+			ImageLoader.getInstance().clearDiskCache();
+			ImageLoader.getInstance().clearMemoryCache();
+			// TODO : clear GCM shit
+
+			startActivity(new Intent(ResideActivity.this,
+					SplashScreenActivity.class));
+			finish();
+		}
+
+		@Override
+		public void onFailure(int statusCode, Header[] arg1, byte[] response,
+				Throwable arg3) {
+			VLogger.e("Connection Failed, status code " + statusCode
+					+ " response "
+					+ (response == null ? "null" : new String(response)));
+
+		}
+
+	}
+
 }

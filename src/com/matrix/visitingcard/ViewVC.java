@@ -40,7 +40,7 @@ public class ViewVC extends FragmentActivity implements OnClickListener {
 		Button bShare = (Button) findViewById(R.id.bShareVC);
 		bShare.setOnClickListener(this);
 
-		bShare.setVisibility(showShareButton ? View.VISIBLE : View.INVISIBLE);
+		bShare.setVisibility(showShareButton ? View.VISIBLE : View.GONE);
 
 	}
 

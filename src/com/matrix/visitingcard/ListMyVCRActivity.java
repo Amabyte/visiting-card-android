@@ -131,7 +131,7 @@ public class ListMyVCRActivity extends Activity implements
 
 	public void acceptVCR(VCR vcr) {
 		lastVCR = vcr;
-		Intent i = new Intent(this, ListMyVCActivity.class);
+		Intent i = new Intent(this, ListMyVCFragment.class);
 		i.putExtra(Constants.Intent.CALLER,
 				Constants.Intent.Values.CALLER_MYVC_FOR_RESULT);
 		startActivityForResult(i, 1);

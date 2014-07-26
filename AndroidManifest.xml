@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name=".SignUpFormActivity"
-            android:label="@string/title_activity_sign_up_form" >
+            android:label="@string/title_activity_sign_up_form"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
         <meta-data
@@ -41,19 +42,15 @@
 
         <activity
             android:name=".CreateVCActivity"
-            android:label="@string/title_activity_create_vc" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:label="@string/title_activity_create_vc"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen" >
         </activity>
         <activity
-            android:name=".ListMyVCActivity"
+            android:name=".ListMyVCFragment"
             android:label="@string/title_activity_list_my_vc" >
         </activity>
         <activity
@@ -62,11 +59,13 @@
         </activity>
         <activity
             android:name="com.matrix.visitingcard.ResideActivity"
-            android:label="@string/main" >
+            android:label="@string/main"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".SplashScreenActivity"
-            android:label="@string/title_activity_splash_screen" >
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -91,8 +90,10 @@
             android:label="@string/title_activity_gcmnotification_action" >
         </activity>
         <activity
+            android:screenOrientation="landscape"
             android:name=".ViewVC"
-            android:label="@string/title_activity_view_vc" >
+            android:label="@string/title_activity_view_vc" 
+             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
     </application>
 

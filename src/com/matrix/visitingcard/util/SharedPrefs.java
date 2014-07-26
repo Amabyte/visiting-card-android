@@ -4,6 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+/**
+ * Wrapper Singleton for SharedPrefs , Nothing fancy, keeps the code tidy
+ * 
+ * @author yajnesh
+ * 
+ */
 public class SharedPrefs {
 	private static SharedPreferences sp = null;
 	private static Context context;
@@ -108,8 +114,11 @@ public class SharedPrefs {
 		editor.commit();
 	}
 
-	public void destroy() {
-		sp.edit().clear().commit();
+	/**
+	 * What do you think this does!
+	 */
+	public boolean destroy() {
+		return sp.edit().clear().commit();
 	}
 
 }

@@ -3,7 +3,13 @@ package com.matrix.visitingcard.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 
 import com.matrix.visitingcard.constant.Constants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -11,7 +17,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class Util {
-	
+
 	public static void addHeadersToUIL(Context context) {
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Cookie", SharedPrefs.getInstance(context)
@@ -28,32 +34,50 @@ public class Util {
 
 		ImageLoader.getInstance().init(config);
 	}
-//	private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-//
-//	/**
-//	 * Generate a value suitable for use in {@link #setId(int)}. This value will
-//	 * not collide with ID values generated at build time by aapt for R.id.
-//	 * 
-//	 * @return a generated ID value
-//	 */
-//	@SuppressLint("NewApi")
-//	public static int generateViewId() {
-//
-//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//
-//			return View.generateViewId();
-//
-//		}
-//		for (;;) {
-//			final int result = sNextGeneratedId.get();
-//			// aapt-generated IDs have the high byte nonzero; clamp to the range
-//			// under that.
-//			int newValue = result + 1;
-//			if (newValue > 0x00FFFFFF)
-//				newValue = 1; // Roll over to 1, not 0.
-//			if (sNextGeneratedId.compareAndSet(result, newValue)) {
-//				return result;
-//			}
-//		}
-//	}
+
+	// private static final AtomicInteger sNextGeneratedId = new
+	// AtomicInteger(1);
+	//
+	// /**
+	// * Generate a value suitable for use in {@link #setId(int)}. This value
+	// will
+	// * not collide with ID values generated at build time by aapt for R.id.
+	// *
+	// * @return a generated ID value
+	// */
+	// @SuppressLint("NewApi")
+	// public static int generateViewId() {
+	//
+	// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+	//
+	// return View.generateViewId();
+	//
+	// }
+	// for (;;) {
+	// final int result = sNextGeneratedId.get();
+	// // aapt-generated IDs have the high byte nonzero; clamp to the range
+	// // under that.
+	// int newValue = result + 1;
+	// if (newValue > 0x00FFFFFF)
+	// newValue = 1; // Roll over to 1, not 0.
+	// if (sNextGeneratedId.compareAndSet(result, newValue)) {
+	// return result;
+	// }
+	// }
+	// }
+	private static float dpFromPx(float px, Activity a) {
+		return (float) (px * 0.9);
+	}
+
+	public static int getDisplayWidth(Activity a) {
+		Display display = a.getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+
+		return (size.x);
+	}
+
+	public static int getDisplayWidth(Context context) {
+		return context.getResources().getDisplayMetrics().widthPixels;
+	}
 }

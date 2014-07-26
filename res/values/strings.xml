@@ -12,5 +12,6 @@
     <string name="title_activity_gcmnotification_action">GCMNotificationActionActivity</string>
     <string name="title_activity_view_vc">ViewVC</string>
     <string name="main">Main</string>
+    <string name="create_vc">Create VC</string>
 
 </resources>

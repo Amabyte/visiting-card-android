@@ -2,11 +2,15 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.model.CallProperties;
@@ -18,14 +22,13 @@ import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.response.FriendsVC;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
-import com.matrix.visitingcard.view.ImprovedStackView;
 
-public class AllVCFragment extends Fragment {
+public class AllVCFragment extends Fragment implements OnItemClickListener {
 	private View parentView;
 	private VCAdapter mAdapter;
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
-	private ImprovedStackView svAllVc;
+	private ListView lvAllVc;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +44,8 @@ public class AllVCFragment extends Fragment {
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(getActivity());
-		svAllVc=(ImprovedStackView)parentView.findViewById(R.id.svAllVc);
+		lvAllVc=(ListView)parentView.findViewById(R.id.lvAllVc);
+		lvAllVc.setOnItemClickListener(this);
 		
 	}
 	@Override
@@ -87,6 +91,19 @@ public class AllVCFragment extends Fragment {
 	private void setAdapter() {
 		mAdapter = new VCAdapter(getActivity(), R.layout.list_item_vc,
 				FriendsVC.getAllVC());
-		svAllVc.setAdapter(mAdapter);
+		
+		VLogger.e("total "+ FriendsVC.getAllVC().size());
+		lvAllVc.setAdapter(mAdapter);
+	}
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Intent i = new Intent(getActivity(), ViewVC.class);
+		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+		i.putExtra(Constants.Intent.CALLER,
+				Constants.Intent.Values.CALLER_FRIENDVC);
+		startActivity(i);
+
 	}
 }

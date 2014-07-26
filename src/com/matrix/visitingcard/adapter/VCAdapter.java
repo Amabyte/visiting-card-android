@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.response.VC;
+import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -42,12 +44,19 @@ public class VCAdapter extends ArrayAdapter<VC> {
 		ViewHolder holder = null;
 		VC vc = getItem(position);
 		if (convertView == null) {
-			convertView = mInflater.inflate(resId, null);
+			convertView = mInflater.inflate(resId,null);
+
 			holder = new ViewHolder();
 
 			holder.ivTemplate = (ImageView) convertView
 					.findViewById(R.id.ivVctImage);
-
+			// VLogger.e("before "+holder.ivTemplate.getLayoutParams().width +
+			// " "+holder.ivTemplate.getWidth());
+			// holder.ivTemplate.getLayoutParams().width = (int) (Util
+			// .getDisplayWidth(getContext()) * .7);
+			// VLogger.e("Log "+Util.getDisplayWidth((Activity) getContext()));
+			// VLogger.e("after "+holder.ivTemplate.getLayoutParams().width +
+			// " "+holder.ivTemplate.getMeasuredWidth());
 			convertView.setTag(holder);
 		} else
 			holder = (ViewHolder) convertView.getTag();
@@ -62,9 +71,7 @@ public class VCAdapter extends ArrayAdapter<VC> {
 	}
 
 	private void setImage(ImageView ivTemplate, String url) {
-		Util.addHeadersToUIL(getContext());
 		ImageLoader.getInstance().displayImage(url, ivTemplate);
 	}
 
-	
 }

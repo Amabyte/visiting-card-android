@@ -1,16 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/llCreateVC"
-    tools:context="${relativePackage}.${activityClass}" >
+    android:background="@drawable/menu_background_brigt" >
 
-    <TextView
-        android:id="@+id/tvNameVCT"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llCreateVC"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/hello_world" />
+        android:orientation="vertical"
+        tools:context="${relativePackage}.${activityClass}" >
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvNameVCT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/hello_world" />
+    </LinearLayout>
+
+</ScrollView>

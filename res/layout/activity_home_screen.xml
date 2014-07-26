@@ -1,18 +1,17 @@
-<com.matrix.visitingcard.view.ImprovedStackView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/svAllVc"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:loopViews="true" />
-<!--
- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF0000"
     android:orientation="vertical"
-    tools:context="${relativePackage}.${activityClass}" >
--->
-<!--
+    tools:context="${relativePackage}.${activityClass}" 
+    android:background="@drawable/menu_background">
+
+    <ListView
+        android:id="@+id/lvAllVc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout><!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

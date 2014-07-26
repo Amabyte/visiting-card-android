@@ -2,10 +2,12 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -22,39 +24,43 @@ import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 
-public class ListOfVCTActivity extends Activity implements OnItemClickListener {
+public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewVCT;
 	private VCTAdapter mAdapter;
+	private View parentView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_list_vct);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		parentView = inflater.inflate(R.layout.activity_list_vct, container,
+				false);
 		initialize();
 		initializeViews();
 
 		getVCT();
 
+		return parentView;
+
 	}
 
 	private void initializeViews() {
-		mListViewVCT = (ListView) findViewById(R.id.lvVCT);
+		mListViewVCT = (ListView) parentView.findViewById(R.id.lvVCT);
 		mListViewVCT.setOnItemClickListener(this);
 
 	}
 
 	private void setAdapter() {
-		mAdapter = new VCTAdapter(this, R.layout.list_item_vct,
+		mAdapter = new VCTAdapter(getActivity(), R.layout.list_item_vct,
 				VCTResponse.getAllVCT());
 		mListViewVCT.setAdapter(mAdapter);
 	}
 
 	private void getVCT() {
-		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
-				"get_vct", "url.properties");
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(
+				getActivity(), "get_vct", "url.properties");
 
-		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(this)
+		mAsyncHttp.addHeader("Cookie", SharedPrefs.getInstance(getActivity())
 				.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
 		ARHandlerGetVCT handler = new ARHandlerGetVCT();
 
@@ -90,22 +96,19 @@ public class ListOfVCTActivity extends Activity implements OnItemClickListener {
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroyView() {
 		mAsyncHttp.cancelAllRequests(true);
-		super.onDestroy();
+		super.onDestroyView();
 	}
-
-	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 
-		Intent i = new Intent(ListOfVCTActivity.this, CreateVCActivity.class);
+		Intent i = new Intent(getActivity(), CreateVCActivity.class);
 		i.putExtra(Constants.Intent.HOME_TO_VC, id);
 
 		startActivity(i);
-		finish();
 
 	}
 

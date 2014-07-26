@@ -4,29 +4,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
@@ -104,17 +103,19 @@ public class CreateVCActivity extends Activity implements
 			case IMAGE:
 				type[i] = inflater.inflate(R.layout.item_type_button, null);
 
-				((Button) type[i]).setOnClickListener(new OnClickListener() {
+				((Button) type[i].findViewById(R.id.bSelectImage))
+						.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View v) {
-						Intent photoPickerIntent = new Intent(
-								Intent.ACTION_PICK);
-						photoPickerIntent.setType("image/*");
-						startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+							@Override
+							public void onClick(View v) {
+								Intent photoPickerIntent = new Intent(
+										Intent.ACTION_PICK);
+								photoPickerIntent.setType("image/*");
+								startActivityForResult(photoPickerIntent,
+										SELECT_PHOTO);
 
-					}
-				});
+							}
+						});
 				break;
 			default:
 				break;
@@ -129,10 +130,11 @@ public class CreateVCActivity extends Activity implements
 		}
 
 		Button submit = new Button(this);
-		submit.setText("submit");
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+		submit.setText(R.string.create_vc);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT,
 				ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.gravity = Gravity.CENTER;
 
 		submit.setOnClickListener(new OnClickListener() {
 
@@ -156,6 +158,10 @@ public class CreateVCActivity extends Activity implements
 						.getData());
 
 				type[type.length - 1].setTag(filePath);
+				ImageView iv = (ImageView) type[type.length - 1]
+						.findViewById(R.id.ivImageSelected);
+				iv.setImageURI(imageReturnedIntent.getData());
+
 			}
 		}
 	}
@@ -203,8 +209,10 @@ public class CreateVCActivity extends Activity implements
 			case TEXT:
 			case TEXTAREA:
 				String value = ((EditText) views[i]).getText().toString();
-				params.put(String.format(PARAM_KEY, i), kt.getKey());
-				params.put(String.format(PARAM_VALUE, i), value);
+				if (value != null && value.length() > 0) {
+					params.put(String.format(PARAM_KEY, i), kt.getKey());
+					params.put(String.format(PARAM_VALUE, i), value);
+				}
 				// VLogger.e("\nkey " + kt.getKey() + "\nval " + value);
 				break;
 			case IMAGE:
@@ -274,6 +282,8 @@ public class CreateVCActivity extends Activity implements
 
 	@Override
 	public void onAsyncFailure(int status, JSONObject jsonObject) {
+		VLogger.e("Connection Failed, status code " + status + " response "
+				+ jsonObject.toString());
 	}
 
 }
