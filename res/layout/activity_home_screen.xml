@@ -2,14 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/menu_background"
     android:orientation="vertical"
-    tools:context="${relativePackage}.${activityClass}" 
-    android:background="@drawable/menu_background">
+    tools:context="${relativePackage}.${activityClass}" >
 
     <ListView
         android:id="@+id/lvAllVc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="No Items :( "
+        android:textSize="18sp" >
+    </TextView>
 
 </LinearLayout><!--
     <LinearLayout

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="5dp"
-        android:text="choose an account"
+        android:text="Choose an account"
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 

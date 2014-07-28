@@ -65,6 +65,7 @@ public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 	private void initializeViews() {
 		mListViewMyVC = (ListView) parentView.findViewById(R.id.lvMyVC);
 		mListViewMyVC.setOnItemClickListener(this);
+		mListViewMyVC.setEmptyView(parentView.findViewById(R.id.tvEmpty));
 
 	}
 

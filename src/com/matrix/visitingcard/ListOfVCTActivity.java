@@ -54,6 +54,7 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 		mAdapter = new VCTAdapter(getActivity(), R.layout.list_item_vct,
 				VCTResponse.getAllVCT());
 		mListViewVCT.setAdapter(mAdapter);
+		mListViewVCT.setEmptyView(parentView.findViewById(R.id.tvEmpty));
 	}
 
 	private void getVCT() {

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -36,27 +37,30 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 
 		parentView = inflater.inflate(R.layout.activity_home_screen, container,
 				false);
-		
+
 		initialize();
 		getAllFriendsVC();
 		return parentView;
 	}
+
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(getActivity());
-		lvAllVc=(ListView)parentView.findViewById(R.id.lvAllVc);
+		lvAllVc = (ListView) parentView.findViewById(R.id.lvAllVc);
 		lvAllVc.setOnItemClickListener(this);
-		
+		lvAllVc.setEmptyView(parentView.findViewById(R.id.tvEmpty));
+
 	}
+
 	@Override
 	public void onDestroyView() {
 		mAsyncHttp.cancelAllRequests(true);
 		super.onDestroyView();
 	}
-	
+
 	private void getAllFriendsVC() {
-		CallProperties connectionProperties = AsyncUtil.getCallProperites(getActivity(),
-				"friend_vc", "url.properties");
+		CallProperties connectionProperties = AsyncUtil.getCallProperites(
+				getActivity(), "friend_vc", "url.properties");
 
 		mAsyncHttp.addHeader("Cookie",
 				sp.getSharedPrefsValueString(Constants.SP.SESSION_ID, null));
@@ -70,9 +74,9 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 		@Override
 		public void onSuccess(int statusCode, Header[] headers, byte[] content) {
 
-			 VLogger.e("ConnectionSuccessful, status code " + statusCode
-			 + "content "
-			 + (content == null ? "null" : new String(content)));
+			VLogger.e("ConnectionSuccessful, status code " + statusCode
+					+ "content "
+					+ (content == null ? "null" : new String(content)));
 			FriendsVC.setVCS(Parser.parseVC(content));
 
 			setAdapter();
@@ -88,14 +92,15 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 		}
 
 	}
+
 	private void setAdapter() {
 		mAdapter = new VCAdapter(getActivity(), R.layout.list_item_vc,
 				FriendsVC.getAllVC());
-		
-		VLogger.e("total "+ FriendsVC.getAllVC().size());
+
+		VLogger.e("total " + FriendsVC.getAllVC().size());
 		lvAllVc.setAdapter(mAdapter);
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {

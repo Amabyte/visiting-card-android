@@ -55,6 +55,7 @@ public class ListMyVCRActivity extends Activity implements
 	private void setAdapter() {
 		mAdapter = new VCRAdapter(this, new ArrayList<VCR>());
 		mListViewVCR.setAdapter(mAdapter);
+		mListViewVCR.setEmptyView(findViewById(R.id.tvEmpty));
 	}
 
 	private void initializeViews() {
@@ -88,7 +89,8 @@ public class ListMyVCRActivity extends Activity implements
 
 	@Override
 	public void onAsyncFailure(int status, JSONObject jsonObject) {
-		VLogger.e(jsonObject.toString());
+		if (jsonObject != null)
+			VLogger.e(jsonObject.toString());
 	}
 
 	@Override
