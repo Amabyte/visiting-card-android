@@ -55,7 +55,8 @@
         </activity>
         <activity
             android:name=".ListMyVCRActivity"
-            android:label="@string/title_activity_list_my_vc" >
+            android:label="@string/title_activity_list_my_vc" 
+             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
         </activity>
         <activity
             android:name="com.matrix.visitingcard.ResideActivity"

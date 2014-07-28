@@ -36,6 +36,8 @@ public class ResideActivity extends FragmentActivity implements
 	private ResideMenuItem itemMyVc;
 	private ResideMenuItem itemCreateVc;
 	private ResideMenuItem itemSignout;
+	private ResideMenuItem itemRequestVC;
+	private ResideMenuItem itemListVCR;
 
 	/**
 	 * Called when the activity is first created.
@@ -83,6 +85,14 @@ public class ResideActivity extends FragmentActivity implements
 				"Create VC");
 		itemCreateVc.setOnClickListener(this);
 
+		itemRequestVC = new ResideMenuItem(this, R.drawable.create_vcr,
+				"Request VC");
+		itemRequestVC.setOnClickListener(this);
+
+		itemListVCR = new ResideMenuItem(this, R.drawable.list_vcr_icon,
+				"Requests");
+		itemListVCR.setOnClickListener(this);
+
 		itemSignout = new ResideMenuItem(this, R.drawable.signout_icon,
 				"Sign Out");
 		itemSignout.setOnClickListener(this);
@@ -90,6 +100,8 @@ public class ResideActivity extends FragmentActivity implements
 		resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
 		resideMenu.addMenuItem(itemMyVc, ResideMenu.DIRECTION_LEFT);
 		resideMenu.addMenuItem(itemCreateVc, ResideMenu.DIRECTION_LEFT);
+		resideMenu.addMenuItem(itemRequestVC, ResideMenu.DIRECTION_LEFT);
+		resideMenu.addMenuItem(itemListVCR, ResideMenu.DIRECTION_LEFT);
 		resideMenu.addMenuItem(itemSignout, ResideMenu.DIRECTION_LEFT);
 
 		resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
@@ -118,6 +130,11 @@ public class ResideActivity extends FragmentActivity implements
 			changeFragment(new ListMyVCFragment());
 		} else if (v == itemCreateVc) {
 			changeFragment(new ListOfVCTActivity());
+		} else if (v == itemRequestVC) {
+			createVCR();
+		} else if (v == itemListVCR) {
+			changeFragment(new AllVCFragment());
+			startActivity(new Intent(this, ListMyVCRActivity.class));
 		} else if (v == itemSignout) {
 			signout();
 		}
@@ -214,4 +231,8 @@ public class ResideActivity extends FragmentActivity implements
 
 	}
 
+	private void createVCR() {
+		VCRCreateDialogFragment createVCRDialogFragment = new VCRCreateDialogFragment();
+		createVCRDialogFragment.show(getSupportFragmentManager(), "creat_vcr");
+	}
 }
