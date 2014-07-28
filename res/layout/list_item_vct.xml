@@ -13,14 +13,17 @@
             android:id="@+id/tvVctId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="id" />
+            android:text="id"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tvVctName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="name" />
+            android:text="name"
+            android:visibility="invisible"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
     <ImageView
