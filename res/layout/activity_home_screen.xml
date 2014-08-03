@@ -7,6 +7,7 @@
     tools:context="${relativePackage}.${activityClass}" >
 
     <ListView
+        android:drawSelectorOnTop="true"
         android:id="@+id/lvAllVc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

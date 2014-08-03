@@ -23,7 +23,8 @@
         android:id="@+id/lvVCT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvLabelChooseVCT" >
+        android:layout_below="@id/tvLabelChooseVCT"
+        android:drawSelectorOnTop="true" >
     </ListView>
 
     <TextView

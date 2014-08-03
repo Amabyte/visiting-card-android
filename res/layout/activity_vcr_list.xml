@@ -7,8 +7,10 @@
     <ListView
         android:id="@+id/lvVRC"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-  <TextView
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="true" />
+
+    <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,4 +19,5 @@
         android:text="No Items :( "
         android:textSize="18sp" >
     </TextView>
+
 </RelativeLayout>

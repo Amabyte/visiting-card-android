@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.matrix.visitingcard.GCMNotificationActionActivity;
 import com.matrix.visitingcard.ListMyVCRActivity;
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.user.User;

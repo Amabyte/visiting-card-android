@@ -2,14 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="${relativePackage}.${activityClass}"
-    android:background="@drawable/menu_background" >
+    android:background="@drawable/menu_background"
+    tools:context="${relativePackage}.${activityClass}" >
 
     <ListView
         android:id="@+id/lvMyVC"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-   <TextView
+        android:layout_height="match_parent"
+        android:drawSelectorOnTop="true" />
+
+    <TextView
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,4 +20,5 @@
         android:text="No Items :( "
         android:textSize="18sp" >
     </TextView>
+
 </RelativeLayout>
