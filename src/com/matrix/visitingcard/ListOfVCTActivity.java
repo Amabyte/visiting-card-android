@@ -2,6 +2,7 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,7 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 	private ListView mListViewVCT;
 	private VCTAdapter mAdapter;
 	private View parentView;
+	private ProgressDialog pd;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +60,7 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 	}
 
 	private void getVCT() {
+		showPD();
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(
 				getActivity(), "get_vct", "url.properties");
 
@@ -79,6 +82,7 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 			// + (content == null ? "null" : new String(content)));
 			VCTResponse.setVCTs(Parser.parseVCT(content));
 			setAdapter();
+			dismissPD();
 		}
 
 		@Override
@@ -87,13 +91,28 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 			VLogger.e("Connection Failed, status code " + statusCode
 					+ " response "
 					+ (response == null ? "null" : new String(response)));
-
+			dismissPD();
 		}
 
 	}
 
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
+		pd = new ProgressDialog(getActivity());
+		pd.setMessage("Please wait, fetching Data");
+		pd.setTitle("Lodaing...");
+	}
+
+	private void showPD() {
+		if (!pd.isShowing()) {
+			pd.show();
+		}
+	}
+
+	private void dismissPD() {
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 
 	@Override

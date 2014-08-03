@@ -2,6 +2,7 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class ResideActivity extends FragmentActivity implements
 	private ResideMenuItem itemSignout;
 	private ResideMenuItem itemRequestVC;
 	private ResideMenuItem itemListVCR;
+	private ProgressDialog pd;
 
 	/**
 	 * Called when the activity is first created.
@@ -61,6 +63,21 @@ public class ResideActivity extends FragmentActivity implements
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
 
+		pd = new ProgressDialog(ResideActivity.this);
+		pd.setMessage("Please wait, fetching Data");
+		pd.setTitle("Lodaing...");
+	}
+
+	private void showPD() {
+		if (!pd.isShowing()) {
+			pd.show();
+		}
+	}
+
+	private void dismissPD() {
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 
 	private void setUpMenu() {
@@ -156,6 +173,7 @@ public class ResideActivity extends FragmentActivity implements
 	}
 
 	private void loadUserData() {
+		showPD();
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
 				"profile", "url.properties");
 
@@ -175,7 +193,7 @@ public class ResideActivity extends FragmentActivity implements
 					+ statusCode + "content "
 					+ (content == null ? "null" : new String(content)));
 			User.setInstance(Parser.parseUser(content));
-
+			dismissPD();
 		}
 
 		@Override
@@ -184,12 +202,13 @@ public class ResideActivity extends FragmentActivity implements
 			VLogger.e("Connection Failed, status code " + statusCode
 					+ " response "
 					+ (response == null ? "null" : new String(response)));
-
+			dismissPD();
 		}
 
 	}
 
 	private void signout() {
+		showPD();
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
 				"sign_out", "url.properties");
 
@@ -215,8 +234,10 @@ public class ResideActivity extends FragmentActivity implements
 			ImageLoader.getInstance().clearMemoryCache();
 			// TODO : clear GCM shit
 
+			dismissPD();
 			startActivity(new Intent(ResideActivity.this,
 					SplashScreenActivity.class));
+
 			finish();
 		}
 
@@ -226,9 +247,10 @@ public class ResideActivity extends FragmentActivity implements
 			VLogger.e("Connection Failed, status code " + statusCode
 					+ " response "
 					+ (response == null ? "null" : new String(response)));
-
+			dismissPD();
 		}
 
+		
 	}
 
 	private void createVCR() {

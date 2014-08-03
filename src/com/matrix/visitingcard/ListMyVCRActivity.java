@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -31,6 +32,7 @@ public class ListMyVCRActivity extends Activity implements
 	private VCRAdapter mAdapter;
 	private SharedPrefs sp;
 	private VCR lastVCR;
+	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,21 @@ public class ListMyVCRActivity extends Activity implements
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
+		pd = new ProgressDialog(ListMyVCRActivity.this);
+		pd.setMessage("Please wait, fetching Data");
+		pd.setTitle("Lodaing...");
+	}
+
+	private void showPD() {
+		if (!pd.isShowing()) {
+			pd.show();
+		}
+	}
+
+	private void dismissPD() {
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 
 	@Override
@@ -64,6 +81,7 @@ public class ListMyVCRActivity extends Activity implements
 	}
 
 	private void getAllMyVC() {
+		showPD();
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(this,
 				"my_vcr", "url.properties");
 
@@ -85,20 +103,24 @@ public class ListMyVCRActivity extends Activity implements
 			}
 		}
 		mAdapter.supportAddAll(vcrs);
+		dismissPD();
 	}
 
 	@Override
 	public void onAsyncFailure(int status, JSONObject jsonObject) {
 		if (jsonObject != null)
 			VLogger.e(jsonObject.toString());
+		dismissPD();
 	}
 
 	@Override
 	public void onAsyncSuccess(JSONObject jsonObject) {
+		dismissPD();
 	}
 
 	@Override
 	public void onAsyncFailure(int status, String string) {
+		dismissPD();
 	}
 
 	@Override

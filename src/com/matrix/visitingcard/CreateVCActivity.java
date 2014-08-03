@@ -8,9 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -44,6 +44,7 @@ public class CreateVCActivity extends Activity implements
 	private int vctId;
 	private VCTResponse vct;
 	private AsyncHttp mAsyncHttp;
+	private ProgressDialog pd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,21 @@ public class CreateVCActivity extends Activity implements
 
 	private void initializeViews() {
 		((TextView) findViewById(R.id.tvNameVCT)).setText(vct.getName());
+		pd = new ProgressDialog(CreateVCActivity.this);
+		pd.setMessage("Please wait, fetching Data");
+		pd.setTitle("Lodaing...");
+	}
 
+	private void showPD() {
+		if (!pd.isShowing()) {
+			pd.show();
+		}
+	}
+
+	private void dismissPD() {
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 
 	private final int SELECT_PHOTO = 1;
@@ -183,6 +198,7 @@ public class CreateVCActivity extends Activity implements
 	protected void sendCollectedInfo(ArrayList<KeysAndTypes> keysAndTypes,
 			View[] views) {
 		VLogger.e("send collection");
+		showPD();
 		String PARAM_KEY = "visiting_card[visiting_card_datas_attributes[%d][key]]";
 		String PARAM_VALUE = "visiting_card[visiting_card_datas_attributes[%d][value]]";
 		String PARAM_IMAGE = "visiting_card[visiting_card_datas_attributes[%d][image]]";
@@ -269,6 +285,7 @@ public class CreateVCActivity extends Activity implements
 
 	@Override
 	public void onAsyncSuccess(JSONObject jsonObject) {
+		dismissPD();
 		Toast.makeText(getApplicationContext(), "VC Created",
 				Toast.LENGTH_SHORT).show();
 		CreateVCActivity.this.finish();
@@ -276,12 +293,18 @@ public class CreateVCActivity extends Activity implements
 
 	@Override
 	public void onAsyncFailure(int status, String string) {
+		dismissPD();
+		Toast.makeText(getApplicationContext(), "Unable To create VC",
+				Toast.LENGTH_SHORT).show();
 		VLogger.e("Connection Failed, status code " + status + " response "
 				+ (string == null ? "null" : new String(string)));
 	}
 
 	@Override
 	public void onAsyncFailure(int status, JSONObject jsonObject) {
+		dismissPD();
+		Toast.makeText(getApplicationContext(), "Unable To create VC",
+				Toast.LENGTH_SHORT).show();
 		VLogger.e("Connection Failed, status code " + status + " response "
 				+ jsonObject.toString());
 	}

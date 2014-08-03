@@ -2,6 +2,7 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,7 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
 	private ListView lvAllVc;
+	private ProgressDialog pd;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +52,21 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 		lvAllVc.setOnItemClickListener(this);
 		lvAllVc.setEmptyView(parentView.findViewById(R.id.tvEmpty));
 
+		pd = new ProgressDialog(getActivity());
+		pd.setMessage("Please wait, fetching Data");
+		pd.setTitle("Lodaing...");
+	}
+
+	private void showPD() {
+		if (!pd.isShowing()) {
+			pd.show();
+		}
+	}
+
+	private void dismissPD() {
+		if (pd.isShowing()) {
+			pd.dismiss();
+		}
 	}
 
 	@Override
@@ -59,6 +76,7 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 	}
 
 	private void getAllFriendsVC() {
+		showPD();
 		CallProperties connectionProperties = AsyncUtil.getCallProperites(
 				getActivity(), "friend_vc", "url.properties");
 
@@ -80,6 +98,7 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 			FriendsVC.setVCS(Parser.parseVC(content));
 
 			setAdapter();
+			dismissPD();
 		}
 
 		@Override
@@ -88,7 +107,7 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 			VLogger.e("Connection Failed, status code " + statusCode
 					+ " response "
 					+ (response == null ? "null" : new String(response)));
-
+			dismissPD();
 		}
 
 	}
