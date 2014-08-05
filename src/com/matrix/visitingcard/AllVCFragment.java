@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -53,8 +52,7 @@ public class AllVCFragment extends Fragment implements OnItemClickListener {
 		lvAllVc.setEmptyView(parentView.findViewById(R.id.tvEmpty));
 
 		pd = new ProgressDialog(getActivity());
-		pd.setMessage("Please wait, fetching Data");
-		pd.setTitle("Lodaing...");
+		pd.setMessage("Please wait...");
 	}
 
 	private void showPD() {

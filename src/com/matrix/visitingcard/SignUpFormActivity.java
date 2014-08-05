@@ -9,7 +9,6 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -24,14 +23,12 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.AsyncH;
 import com.matrix.asynchttplibrary.model.CallProperties;
-import com.matrix.asynchttplibrary.parser.AsyncParser;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.AsyncHttp;
 import com.matrix.visitingcard.http.parser.Parser;
 import com.matrix.visitingcard.http.request.SocialLoginRequest;
 import com.matrix.visitingcard.logger.VLogger;
-import com.matrix.visitingcard.user.User;
 import com.matrix.visitingcard.util.SharedPrefs;
 
 public class SignUpFormActivity extends Activity {
@@ -91,7 +88,6 @@ public class SignUpFormActivity extends Activity {
 		@Override
 		protected void onPreExecute() {
 			progressDialog = new ProgressDialog(SignUpFormActivity.this);
-			progressDialog.setTitle("Login");
 			progressDialog.setMessage("Google Login");
 			progressDialog.setCancelable(false);
 			progressDialog.show();
@@ -214,8 +210,7 @@ public class SignUpFormActivity extends Activity {
 	}
 
 	public void launchHomeScreen() {
-		startActivity(new Intent(SignUpFormActivity.this,
-				ResideActivity.class));
+		startActivity(new Intent(SignUpFormActivity.this, ResideActivity.class));
 
 	}
 

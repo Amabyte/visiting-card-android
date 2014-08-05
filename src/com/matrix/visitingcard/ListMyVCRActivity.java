@@ -47,8 +47,7 @@ public class ListMyVCRActivity extends Activity implements
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		sp = SharedPrefs.getInstance(this);
 		pd = new ProgressDialog(ListMyVCRActivity.this);
-		pd.setMessage("Please wait, fetching Data");
-		pd.setTitle("Lodaing...");
+		pd.setMessage("Please wait...");
 	}
 
 	private void showPD() {
@@ -133,7 +132,7 @@ public class ListMyVCRActivity extends Activity implements
 
 	@Override
 	public void reloadUi() {
-		getAllMyVC();
+		finish();
 	}
 
 	public AsyncH getAsyncHttp() {
@@ -155,7 +154,7 @@ public class ListMyVCRActivity extends Activity implements
 
 	public void acceptVCR(VCR vcr) {
 		lastVCR = vcr;
-		Intent i = new Intent(this, ListMyVCFragment.class);
+		Intent i = new Intent(this, SelectVCActivity.class);
 		i.putExtra(Constants.Intent.CALLER,
 				Constants.Intent.Values.CALLER_MYVC_FOR_RESULT);
 		startActivityForResult(i, 1);

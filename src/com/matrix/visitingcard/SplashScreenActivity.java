@@ -1,7 +1,6 @@
 package com.matrix.visitingcard;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,7 +21,6 @@ public class SplashScreenActivity extends Activity {
 	public static final String EXTRA_MESSAGE = "message";
 	private String SENDER_ID = "445427555808";
 	private GoogleCloudMessaging gcm;
-	private AtomicInteger msgId = new AtomicInteger();
 	private String regid;
 	private SharedPrefs sp;
 
@@ -131,18 +129,16 @@ public class SplashScreenActivity extends Activity {
 	 * shared preferences.
 	 */
 	private void registerInBackground() {
-		new AsyncTask() {
+		new AsyncTask<Void, Void, Void>() {
 
 			@Override
-			protected Object doInBackground(Object... params) {
-				String msg = "";
+			protected Void doInBackground(Void... params) {
 				try {
 					if (gcm == null) {
 						gcm = GoogleCloudMessaging
 								.getInstance(SplashScreenActivity.this);
 					}
 					regid = gcm.register(SENDER_ID);
-					msg = "Device registered, registration ID=" + regid;
 
 					// You should send the registration ID to your server over
 					// HTTP,
@@ -162,20 +158,13 @@ public class SplashScreenActivity extends Activity {
 					// Persist the regID - no need to register again.
 					storeRegistrationId(SplashScreenActivity.this, regid);
 				} catch (IOException ex) {
-					msg = "Error :" + ex.getMessage();
 					// If there is an error, don't just keep trying to register.
 					// Require the user to click a button again, or perform
 					// exponential back-off.
 				}
-				return msg;
-
+				return null;
 			}
-
-			@Override
-			protected void onPostExecute(Object msg) {
-			}
-
-		}.execute(null, null, null);
+		}.execute();
 	}
 
 	private void storeRegistrationId(Context context, String regId) {

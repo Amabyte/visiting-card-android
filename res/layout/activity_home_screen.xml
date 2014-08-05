@@ -1,84 +1,27 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/menu_background"
-    android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
     <ListView
-        android:drawSelectorOnTop="true"
         android:id="@+id/lvAllVc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        android:drawSelectorOnTop="true"
+        android:padding="10dp"
+        android:scrollbarStyle="outsideOverlay" />
 
     <TextView
         android:id="@+id/tvEmpty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:text="No Items :( "
         android:textSize="18sp" >
     </TextView>
 
-</LinearLayout><!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/bCreateNewVC"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Create VC" />
-
-        <Button
-            android:id="@+id/bViewMyVC"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="View My Cards" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/bSignout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="SigOut" />
-
-        <Button
-            android:id="@+id/bCreateVCR"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Create VCR" />
-
-        <Button
-            android:id="@+id/bAllVCR"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="All VCR" />
-    </LinearLayout>
--->
-
-
-<!--
-    <ListView
-        android:id="@+id/lvListVC"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </ListView>
--->
-
-
-<!-- </LinearLayout> -->
+</RelativeLayout>

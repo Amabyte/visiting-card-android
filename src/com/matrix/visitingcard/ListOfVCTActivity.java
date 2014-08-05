@@ -99,8 +99,7 @@ public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
 	private void initialize() {
 		mAsyncHttp = AsyncHttp.getNewInstance();
 		pd = new ProgressDialog(getActivity());
-		pd.setMessage("Please wait, fetching Data");
-		pd.setTitle("Lodaing...");
+		pd.setMessage("Please wait...");
 	}
 
 	private void showPD() {

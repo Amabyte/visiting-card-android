@@ -17,7 +17,6 @@ import com.matrix.visitingcard.http.response.VCTResponse;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class VCTAdapter extends ArrayAdapter<VCTResponse> {
-	private Context context;
 	private int resId;
 	private LayoutInflater mInflater;
 
@@ -25,7 +24,6 @@ public class VCTAdapter extends ArrayAdapter<VCTResponse> {
 
 	public VCTAdapter(Context context, int resourceId, List<VCTResponse> items) {
 		super(context, resourceId, items);
-		this.context = context;
 		this.resId = resourceId;
 		// this.items = items;
 		this.mInflater = (LayoutInflater) context
@@ -58,12 +56,13 @@ public class VCTAdapter extends ArrayAdapter<VCTResponse> {
 
 		holder.id.setText(vctResponse.getId() + "");
 		holder.name.setText(vctResponse.getName());
-		
-		setImage(holder.ivTemplate,Constants.URL.IMAGE_BASE+ vctResponse.getSampleUrls().getOriginal());
-		
-		//if (vctResponse.getImage() != null) {
-		//	holder.ivTemplate.setImageBitmap(vctResponse.getImage());
-		//}
+
+		setImage(holder.ivTemplate, Constants.URL.IMAGE_BASE
+				+ vctResponse.getSampleUrls().getOriginal());
+
+		// if (vctResponse.getImage() != null) {
+		// holder.ivTemplate.setImageBitmap(vctResponse.getImage());
+		// }
 		return convertView;
 	}
 

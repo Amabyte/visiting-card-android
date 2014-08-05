@@ -11,6 +11,7 @@ public class Constants {
 		public static final String MY_VC_LIST_ID = "my_list_vc_id";
 		public static final String CALLER = "who_is_calling_me";
 		public static final String VC_ID = "vc_id";
+		public static final String SELECT_VC = "vc_select";
 
 		public class Values {
 			public static final String CALLER_FRIENDVC = "show_friends_vc";

@@ -3,7 +3,6 @@ package com.matrix.visitingcard;
 import org.apache.http.Header;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +29,6 @@ public class ResideActivity extends FragmentActivity implements
 		View.OnClickListener {
 
 	private ResideMenu resideMenu;
-	private Context mContext;
 	private ResideMenuItem itemHome;
 	private AsyncHttp mAsyncHttp;
 	private SharedPrefs sp;
@@ -52,7 +50,6 @@ public class ResideActivity extends FragmentActivity implements
 		initialize();
 		loadUserData();
 		Util.addHeadersToUIL(this);
-		mContext = this;
 
 		setUpMenu();
 
@@ -64,8 +61,7 @@ public class ResideActivity extends FragmentActivity implements
 		sp = SharedPrefs.getInstance(this);
 
 		pd = new ProgressDialog(ResideActivity.this);
-		pd.setMessage("Please wait, fetching Data");
-		pd.setTitle("Lodaing...");
+		pd.setMessage("Please wait...");
 	}
 
 	private void showPD() {
@@ -250,7 +246,6 @@ public class ResideActivity extends FragmentActivity implements
 			dismissPD();
 		}
 
-		
 	}
 
 	private void createVCR() {

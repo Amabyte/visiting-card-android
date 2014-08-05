@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.matrix.visitingcard"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="2"
+    android:versionName="1.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -32,7 +32,6 @@
         </activity>
         <activity
             android:name=".SignUpFormActivity"
-            android:label="@string/title_activity_sign_up_form"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
 
@@ -42,30 +41,20 @@
 
         <activity
             android:name=".CreateVCActivity"
-            android:label="@string/title_activity_create_vc"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
-        <activity
-            android:name=".HomeScreenActivity"
-            android:label="@string/title_activity_home_screen" >
-        </activity>
-        <activity
-            android:name=".ListMyVCFragment"
-            android:label="@string/title_activity_list_my_vc" >
+        <activity android:name=".ListMyVCFragment" >
         </activity>
         <activity
             android:name=".ListMyVCRActivity"
-            android:label="@string/title_activity_list_my_vc" 
-             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
-            android:name="com.matrix.visitingcard.ResideActivity"
-            android:label="@string/main"
+            android:name=".ResideActivity"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
         <activity
             android:name=".SplashScreenActivity"
-            android:label="@string/title_activity_splash_screen"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -91,10 +80,15 @@
             android:label="@string/title_activity_gcmnotification_action" >
         </activity>
         <activity
-            android:screenOrientation="landscape"
             android:name=".ViewVC"
-            android:label="@string/title_activity_view_vc" 
-             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:label="@string/title_activity_view_vc"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".SelectVCActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
         </activity>
     </application>
 

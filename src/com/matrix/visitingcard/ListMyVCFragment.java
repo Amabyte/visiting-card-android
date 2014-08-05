@@ -2,6 +2,7 @@ package com.matrix.visitingcard;
 
 import org.apache.http.Header;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,23 @@ public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 	private SharedPrefs sp;
 	private View parentView;
 	private ProgressDialog pd;
+	private boolean isOpenForResult = false;
+
+	public static ListMyVCFragment getInstance(boolean isOpenForResult) {
+		ListMyVCFragment f = new ListMyVCFragment();
+		Bundle b = new Bundle();
+		b.putBoolean(Constants.Intent.SELECT_VC, isOpenForResult);
+		f.setArguments(b);
+		return f;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		if (isAdded() && getArguments() != null)
+			isOpenForResult = getArguments().getBoolean(
+					Constants.Intent.SELECT_VC);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,8 +71,7 @@ public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 		Util.addHeadersToUIL(getActivity());
 
 		pd = new ProgressDialog(getActivity());
-		pd.setMessage("Please wait, fetching Data");
-		pd.setTitle("Lodaing...");
+		pd.setMessage("Please wait...");
 	}
 
 	private void showPD() {
@@ -128,22 +145,14 @@ public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// String caller = getIntent().getStringExtra(Constants.Intent.CALLER);
-		// if (caller != null
-		// && caller
-		// .equals(Constants.Intent.Values.CALLER_MYVC_FOR_RESULT)) {
-		// Intent resultIntent = new Intent();
-		// resultIntent.putExtra(Constants.Intent.VC_ID,
-		// MyVC.getAllVC().get((int) id).getId());
-		// setResult(Activity.RESULT_OK, resultIntent);
-		// finish();
-		// } else
-		{
-			Intent i = new Intent(getActivity(), ViewVC.class);
-			i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
-			i.putExtra(Constants.Intent.CALLER,
-					Constants.Intent.Values.CALLER_MYVC);
-			startActivity(i);
+		if (isOpenForResult) {
+			((SelectVCActivity) getActivity()).onResult(MyVC.getAllVC()
+					.get((int) id).getId());
+			return;
 		}
+		Intent i = new Intent(getActivity(), ViewVC.class);
+		i.putExtra(Constants.Intent.MY_VC_LIST_ID, (int) id);
+		i.putExtra(Constants.Intent.CALLER, Constants.Intent.Values.CALLER_MYVC);
+		startActivity(i);
 	}
 }

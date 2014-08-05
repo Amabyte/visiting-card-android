@@ -5,10 +5,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Point;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.Display;
 
 import com.matrix.visitingcard.constant.Constants;

@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.matrix.visitingcard.http.response.MyVC;
 import com.matrix.visitingcard.http.response.VC;
 import com.matrix.visitingcard.http.response.VC.ImageUrl;
 import com.matrix.visitingcard.http.response.VC.KeysAndValues;

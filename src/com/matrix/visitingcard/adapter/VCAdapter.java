@@ -9,17 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.matrix.visitingcard.R;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.response.VC;
-import com.matrix.visitingcard.logger.VLogger;
-import com.matrix.visitingcard.util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class VCAdapter extends ArrayAdapter<VC> {
-	private Context context;
 	private int resId;
 	private LayoutInflater mInflater;
 
@@ -27,7 +23,6 @@ public class VCAdapter extends ArrayAdapter<VC> {
 
 	public VCAdapter(Context context, int resourceId, List<VC> items) {
 		super(context, resourceId, items);
-		this.context = context;
 		this.resId = resourceId;
 		// this.items = items;
 		this.mInflater = (LayoutInflater) context
