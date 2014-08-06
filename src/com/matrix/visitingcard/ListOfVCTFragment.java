@@ -25,7 +25,7 @@ import com.matrix.visitingcard.http.response.VCTResponse;
 import com.matrix.visitingcard.logger.VLogger;
 import com.matrix.visitingcard.util.SharedPrefs;
 
-public class ListOfVCTActivity extends Fragment implements OnItemClickListener {
+public class ListOfVCTFragment extends Fragment implements OnItemClickListener {
 	private AsyncH mAsyncHttp;
 	private ListView mListViewVCT;
 	private VCTAdapter mAdapter;

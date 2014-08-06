@@ -200,7 +200,8 @@ public class SignUpFormActivity extends Activity {
 					+ (response == null ? "null" : new String(response)));
 
 			Toast.makeText(SignUpFormActivity.this,
-					"Unable to login please retry", Toast.LENGTH_LONG).show();
+					"Unable to login please retry : " + arg3.getMessage(),
+					Toast.LENGTH_LONG).show();
 			if (progressDialog != null && progressDialog.isShowing()) {
 				progressDialog.dismiss();
 			}

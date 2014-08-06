@@ -142,7 +142,7 @@ public class ResideActivity extends FragmentActivity implements
 		} else if (v == itemMyVc) {
 			changeFragment(new ListMyVCFragment());
 		} else if (v == itemCreateVc) {
-			changeFragment(new ListOfVCTActivity());
+			changeFragment(new ListOfVCTFragment());
 		} else if (v == itemRequestVC) {
 			createVCR();
 		} else if (v == itemListVCR) {

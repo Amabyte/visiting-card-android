@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.matrix.visitingcard.ListMyVCRActivity;
 import com.matrix.visitingcard.R;
+import com.matrix.visitingcard.ResideActivity;
 import com.matrix.visitingcard.user.User;
 
 public class GcmIntentService extends IntentService {
@@ -40,8 +41,12 @@ public class GcmIntentService extends IntentService {
 		if (User.isSignedIn(getApplicationContext())) {
 			mNotificationManager = (NotificationManager) this
 					.getSystemService(Context.NOTIFICATION_SERVICE);
-			PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-					new Intent(this, ListMyVCRActivity.class), 0);
+			PendingIntent contentIntent = PendingIntent.getActivity(
+					this,
+					0,
+					new Intent(this, extras.getString("type").equals(
+							"vc_request") ? ListMyVCRActivity.class
+							: ResideActivity.class), 0);
 			String title = extras.getString("title");
 			String msg = extras.getString("message");
 			if (msg == null)

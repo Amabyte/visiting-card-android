@@ -35,3 +35,7 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+-keep class com.loopj.android.http.** { *; }
+-dontwarn com.loopj.android.http.**
+-keep class com.matrix.asynchttplibrary.** { *; }
+-dontwarn com.matrix.asynchttplibrary.**
