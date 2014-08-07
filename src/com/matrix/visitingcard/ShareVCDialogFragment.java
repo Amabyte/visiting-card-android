@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
 import com.matrix.visitingcard.constant.Constants;
@@ -30,6 +31,18 @@ public class ShareVCDialogFragment extends DialogFragment implements
 	private Button createVCRButton;
 	private AsyncHttp mAsyncHttp;
 	private int vcId;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(getActivity(), "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(getActivity());
+	}
 
 	public static ShareVCDialogFragment getNewInstance(int vcId) {
 		ShareVCDialogFragment f = new ShareVCDialogFragment();

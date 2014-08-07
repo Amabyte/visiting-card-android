@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.AsyncH;
 import com.matrix.asynchttplibrary.model.CallProperties;
@@ -35,6 +36,18 @@ public class ListMyVCFragment extends Fragment implements OnItemClickListener {
 	private View parentView;
 	private ProgressDialog pd;
 	private boolean isOpenForResult = false;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(getActivity(), "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(getActivity());
+	}
 
 	public static ListMyVCFragment getInstance(boolean isOpenForResult) {
 		ListMyVCFragment f = new ListMyVCFragment();

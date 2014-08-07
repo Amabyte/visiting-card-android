@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.RequestParams;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
@@ -29,6 +30,18 @@ public class VCRCreateDialogFragment extends DialogFragment implements
 	private EditText emailEditText, messsageEditText;
 	private Button createVCRButton;
 	private AsyncHttp mAsyncHttp;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(getActivity(), "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(getActivity());
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

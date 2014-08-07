@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.flurry.android.FlurryAgent;
 import com.matrix.asynchttplibrary.AsyncH;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
@@ -33,6 +34,18 @@ public class ListMyVCRActivity extends Activity implements
 	private SharedPrefs sp;
 	private VCR lastVCR;
 	private ProgressDialog pd;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

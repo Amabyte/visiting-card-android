@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.flurry.android.FlurryAgent;
 import com.matrix.visitingcard.constant.Constants;
 import com.matrix.visitingcard.http.response.FriendsVC;
 import com.matrix.visitingcard.http.response.MyVC;
@@ -18,6 +19,18 @@ public class ViewVC extends FragmentActivity implements OnClickListener {
 	private VC vc;
 	private ImageView ivVC;
 	private boolean showShareButton;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

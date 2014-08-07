@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.RequestParams;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
@@ -44,6 +45,18 @@ public class CreateVCActivity extends Activity implements
 	private int vctId;
 	private VCTResponse vct;
 	private AsyncHttp mAsyncHttp;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,7 +172,8 @@ public class CreateVCActivity extends Activity implements
 				iv.setImageURI(uri);
 
 				String filePath = getRealPathFromURI(uri);
-				type[type.length - 1].setTag(filePath);//Why it is type.length-1 ? 
+				type[type.length - 1].setTag(filePath);// Why it is
+														// type.length-1 ?
 
 			}
 		}

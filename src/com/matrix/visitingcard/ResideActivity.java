@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.matrix.asynchttplibrary.model.CallProperties;
 import com.matrix.asynchttplibrary.util.AsyncUtil;
@@ -38,6 +39,18 @@ public class ResideActivity extends FragmentActivity implements
 	private ResideMenuItem itemRequestVC;
 	private ResideMenuItem itemListVCR;
 	private ProgressDialog pd;
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.onStartSession(this, "C8ZJZ5PWCFZ9WFQ5QKHM");
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 
 	/**
 	 * Called when the activity is first created.
