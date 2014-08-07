@@ -63,7 +63,7 @@ public class VCRAdapter extends SupportArrayAdapter<VCR> {
 		if (vcr.getMessage() != null && !vcr.getMessage().equals(""))
 			message = "\n" + vcr.getMessage();
 		holder.messageTextView.setText(vcr.getUserName()
-				+ "is requested your VC." + message);
+				+ " is requesting your VC" + message);
 		holder.acceptButton.setTag(position);
 		holder.declineButton.setTag(position);
 		return convertView;
