@@ -75,7 +75,7 @@ public class CreateVCActivity extends Activity implements
 		((TextView) findViewById(R.id.tvNameVCT)).setText(vct.getName());
 	}
 
-	private final int SELECT_PHOTO = 1;
+	// private final int SELECT_PHOTO = 1;
 	private View type[];
 
 	private void constructInputFields() {
@@ -100,7 +100,7 @@ public class CreateVCActivity extends Activity implements
 		int size = keysAndTypes.size();
 		type = new View[size];
 
-		for (int i = 0; i < size; i++) {
+		for (Integer i = 0; i < size; i++) {
 
 			KeysAndTypes kt = keysAndTypes.get(i);
 			switch (kt.getType()) {
@@ -115,18 +115,19 @@ public class CreateVCActivity extends Activity implements
 			case IMAGE:
 				type[i] = inflater.inflate(R.layout.item_type_button, null);
 
-				((Button) type[i].findViewById(R.id.bSelectImage))
-						.setOnClickListener(new OnClickListener() {
+				Button b = ((Button) type[i].findViewById(R.id.bSelectImage));
+				b.setTag(i);
+				b.setOnClickListener(new OnClickListener() {
 
-							@Override
-							public void onClick(View v) {
-								Intent i = new Intent(
-										Intent.ACTION_PICK,
-										android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-								startActivityForResult(i, SELECT_PHOTO);
+					@Override
+					public void onClick(View v) {
+						Intent i = new Intent(
+								Intent.ACTION_PICK,
+								android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+						startActivityForResult(i, (Integer) v.getTag());
 
-							}
-						});
+					}
+				});
 				break;
 			default:
 				break;
@@ -162,20 +163,19 @@ public class CreateVCActivity extends Activity implements
 			Intent imageReturnedIntent) {
 		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-		switch (requestCode) {
-		case SELECT_PHOTO:
+	//	switch (requestCode) {
+	//	case SELECT_PHOTO:
 			if (resultCode == RESULT_OK) {
 				Uri uri = imageReturnedIntent.getData();
 
-				ImageView iv = (ImageView) type[type.length - 1]
+				ImageView iv = (ImageView) type[requestCode]
 						.findViewById(R.id.ivImageSelected);
 				iv.setImageURI(uri);
 
 				String filePath = getRealPathFromURI(uri);
-				type[type.length - 1].setTag(filePath);// Why it is
-														// type.length-1 ?
+				type[requestCode].setTag(filePath);
 
-			}
+			//}
 		}
 	}
 

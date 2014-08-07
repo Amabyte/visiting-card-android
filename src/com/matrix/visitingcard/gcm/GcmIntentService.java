@@ -41,12 +41,15 @@ public class GcmIntentService extends IntentService {
 		if (User.isSignedIn(getApplicationContext())) {
 			mNotificationManager = (NotificationManager) this
 					.getSystemService(Context.NOTIFICATION_SERVICE);
+		
 			PendingIntent contentIntent = PendingIntent.getActivity(
 					this,
 					0,
 					new Intent(this, extras.getString("type").equals(
 							"vc_request") ? ListMyVCRActivity.class
 							: ResideActivity.class), 0);
+			
+			
 			String title = extras.getString("title");
 			String msg = extras.getString("message");
 			if (msg == null)
@@ -58,7 +61,9 @@ public class GcmIntentService extends IntentService {
 					.setStyle(
 							new NotificationCompat.BigTextStyle().bigText(msg))
 					.setContentText(msg);
+		
 			mBuilder.setContentIntent(contentIntent);
+			
 			mBuilder.setSound(RingtoneManager
 					.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
 			Notification notification = mBuilder.build();
