@@ -234,6 +234,8 @@ public class CreateVCActivity extends Activity implements
 				Object o = views[i].getTag();
 				if (o != null) {
 					filePath = (String) o;
+				}else{
+					continue;
 				}
 				try {
 					image = new File(filePath);
